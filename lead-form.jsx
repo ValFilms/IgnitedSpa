@@ -2,7 +2,7 @@
 const { useState: useStateLF, useEffect: useEffectLF, useRef: useRefLF } = React;
 
 const STORAGE_KEY = 'ignited_spa_leads';
-const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/tjeTjvRXWK5MrsLV7eGi/webhook-trigger/a7853cd6-e4fc-49aa-a3b7-b29e794cb4ba';
+const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/tjeTjvRXWK5MrsLV7eGi/webhook-trigger/960bac93-4fa0-402e-9b19-fa2883fb90a4';
 
 // ── Save to localStorage (backup) ──────────────────────────────────────────
 function saveLead(lead) {
