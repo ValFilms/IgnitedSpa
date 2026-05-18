@@ -40,7 +40,7 @@ function AboutHero() {
           </p>
           <div className="about-hero-stats reveal in d3">
             <div className="ah-stat">
-              <span className="ah-num serif">$124<span className="ah-suf">K+</span></span>
+              <span className="ah-num serif">$224<span className="ah-suf">K+</span></span>
               <span className="ah-lbl">Ad spend managed</span>
             </div>
             <div className="ah-stat">
@@ -81,6 +81,9 @@ function AboutMission() {
             </p>
             <p>
               Our model is simple: we run the ads, build the systems, staff the phones, and book the calendar. You show up and treat. Nothing more.
+            </p>
+            <p>
+              And we work <em>with</em> you, not over you. Every clinic is different, so we partner with you on what feels right for your patients and your brand &mdash; we don't push our playbook on you. Your call, every time.
             </p>
             <div className="about-mission-checks">
               {['No medical claims ever run in our creative', 'HIPAA-conscious lead handling', 'Medspa-specific audience targeting', 'Treatment-level ROAS tracking'].map((t,i) => (
@@ -124,7 +127,7 @@ function AboutStory() {
               We went all-in on the niche. Built proprietary offer frameworks for consult-based services. Hired sales reps who understood aesthetic vocabulary. Built compliance guardrails into every creative brief. Learned the difference between a "filler curious" cold lead and a ready-to-book patient.
             </p>
             <p>
-              Three years later, our clients are fully booked — and we've never worked with anyone outside the aesthetic medicine space. That's intentional. It's what makes the results possible.
+              Four years later, our clients are fully booked — and we've never worked with anyone outside the aesthetic medicine space. That's intentional. It's what makes the results possible.
             </p>
           </div>
         </div>
@@ -179,30 +182,44 @@ function AboutDiff() {
 }
 
 function AboutTeam() {
-  const team = [
-    { init: 'JR', name: 'Jordan R.', role: 'Founder & Head Strategist', bg: '#0E2244', note: '8 yrs in performance marketing; former head of growth at a national aesthetic group.' },
-    { init: 'MC', name: 'Maya C.', role: 'Creative Director', bg: '#1B3457', note: 'Specializes in medspa-compliant UGC, before/after creative, and founder-led content.' },
-    { init: 'DT', name: 'Daniel T.', role: 'Head of Sales Operations', bg: '#6FA0CB', note: 'Runs our appointment-booking team. Former aesthetic sales trainer. 10k+ calls booked.' },
-    { init: 'SP', name: 'Sofia P.', role: 'Paid Media Lead', bg: '#0A1F3D', note: 'Meta & Google certified. Manages $80K+ monthly in medspa ad spend across 15+ accounts.' },
+  const founders = [
+    {
+      img: 'founder-val.png',
+      name: 'Val',
+      role: 'Cofounder',
+      note: 'Val is a paid media specialist with a background in performance advertising for service businesses. He founded Ignited Spa to help medspas grow through targeted Meta ads and proven client acquisition systems.'
+    },
+    {
+      img: 'founder-yaniv.jpg',
+      name: 'Yaniv',
+      role: 'Cofounder',
+      note: 'Yaniv is an operations and systems specialist focused on building the backend infrastructure that turns ad leads into booked clients. He co-founded Ignited Spa to make sure every medspa we work with runs like a well-oiled machine.'
+    },
   ];
   return (
-    <section className="section about-team-section" aria-label="Our team">
+    <section className="section about-team-section" aria-label="The cofounders">
       <div className="container">
         <div className="s-head">
           <div>
-            <span className="label">The team</span>
-            <h2 className="reveal in">People who only think<br/>about <em>medspa growth.</em></h2>
+            <span className="label">The cofounders</span>
+            <h2 className="reveal in">Two operators. One <em>obsession.</em></h2>
           </div>
           <p className="right reveal in d1">
-            Every team member here has worked in or with the aesthetic industry. No generalists.
+            We built Ignited Spa together because we saw the same problem from two different sides &mdash; and decided to solve it the right way, for one industry only.
           </p>
         </div>
-        <div className="about-team-grid">
-          {team.map((m, i) => (
-            <div className={"about-team-card reveal in d" + (i % 3)} key={i}>
-              <div className="atc-avatar" style={{background: `linear-gradient(135deg, ${m.bg}, var(--navy-3))`}}>
-                {m.init}
-              </div>
+        <div className="about-team-grid founders-grid">
+          {founders.map((m, i) => (
+            <div className={"about-team-card founder-card reveal in d" + i} key={i}>
+              {m.img ? (
+                <div className="founder-photo">
+                  <img src={m.img} alt={m.name} loading="lazy" />
+                </div>
+              ) : (
+                <div className="atc-avatar founder-avatar" style={{background: `linear-gradient(135deg, ${m.bg}, var(--navy-3))`}}>
+                  {m.init}
+                </div>
+              )}
               <h3 className="atc-name">{m.name}</h3>
               <div className="atc-role">{m.role}</div>
               <p className="atc-note">{m.note}</p>
@@ -314,7 +331,6 @@ function AboutApp() {
         <AboutStory />
         <AboutDiff />
         <AboutTeam />
-        <AboutValues />
         <AboutReviewsBar />
         <AboutCTA />
       </main>

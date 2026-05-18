@@ -282,6 +282,7 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
   letter-spacing: -0.02em; margin: 14px 0 0; max-width: 18ch;
 }
 .s-head h2 em { font-style: italic; color: var(--navy-2); }
+.offer-section .s-head h2 em { color: var(--sky-3); }
 .s-head .right { max-width: 360px; color: var(--mute); font-size: 15px; }
 
 /* ====== CASE STUDIES ====== */

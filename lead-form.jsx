@@ -57,9 +57,14 @@ async function sendToGHL(data) {
 function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 function validPhone(p) { return p.replace(/\D/g,'').length >= 10; }
 
-const REV_RANGES   = ['Under $30k / mo', '$30k \u2013 $75k / mo', '$75k \u2013 $200k / mo', '$200k+ / mo'];
+const REV_RANGES   = ['Under $10k / mo', '$10k \u2013 $30k / mo', '$30k \u2013 $50k / mo', '$50k+ / mo'];
 const SPEND_RANGES = ['Not running ads yet', 'Under $2k / mo', '$2k \u2013 $10k / mo', '$10k+ / mo'];
-const GOALS        = ['More new patients', 'Fill underbooked days', 'Launch a new treatment', 'Scale to more locations'];
+const GOALS        = [
+  'Bring in more qualified new patients',
+  'Increase high-value package sales',
+  'Fill provider schedules consistently',
+  'Launch a new service or device',
+];
 
 function LeadForm({ variant = 'inline', onDone }) {
   const [step,       setStep]       = useStateLF(0);
@@ -147,7 +152,7 @@ function LeadForm({ variant = 'inline', onDone }) {
       </div>
 
       <div className="lead-step-label">
-        Step {step + 1} of 3 \u2014 {['About you', 'About your spa', 'About your growth'][step]}
+        Step {step + 1} of 3 &mdash; {['About you', 'About your spa', 'About your growth'][step]}
       </div>
 
       {step === 0 && (
@@ -177,10 +182,10 @@ function LeadForm({ variant = 'inline', onDone }) {
       {err && <div className="lead-error">{err}</div>}
 
       <div className="lead-actions">
-        {step > 0 && <button type="button" className="lead-back" onClick={back} disabled={submitting}>\u2190 Back</button>}
+        {step > 0 && <button type="button" className="lead-back" onClick={back} disabled={submitting}>&larr; Back</button>}
         <button type="button" className="lead-next" onClick={next} disabled={submitting}>
           {submitting
-            ? <><span className="lead-spinner"></span> Sending\u2026</>
+            ? <><span className="lead-spinner"></span> Sending&hellip;</>
             : <>{step === 2 ? 'Submit & get my audit' : 'Continue'}
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
               </>
@@ -189,7 +194,7 @@ function LeadForm({ variant = 'inline', onDone }) {
       </div>
 
       <div className="lead-trust">
-        \uD83D\uDD12 Your info stays with us. No spam, no sharing \u2014 ever.
+        &#128274; Your info stays with us. No spam, no sharing &mdash; ever.
       </div>
     </div>
   );

@@ -54,6 +54,9 @@ function Nav() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  // On non-root pages, anchors must point back to index.html
+  const isAbout = typeof window !== 'undefined' && /about\.html$/.test(window.location.pathname);
+  const home = (hash) => (isAbout ? 'index.html' + hash : hash);
   return (
     <nav className={"nav " + (scrolled ? "scrolled" : "")}>
       <div className="container nav-inner">
@@ -62,11 +65,11 @@ function Nav() {
           <span>Ignited<span className="serif-i" style={{marginLeft:'4px', color:'var(--navy-2)'}}>Spa</span></span>
         </a>
         <div className="nav-links">
-          <a href="#offer">The offer</a>
-          <a href="#work">Case studies</a>
-          <a href="#services">Services</a>
-          <a href="#process">Process</a>
-          <a href="#reviews">Reviews</a>
+          <a href={home('#offer')}>The offer</a>
+          <a href={home('#work')}>Case studies</a>
+          <a href={home('#services')}>Services</a>
+          <a href={home('#process')}>Process</a>
+          <a href={home('#reviews')}>Reviews</a>
           <a href="about.html">About</a>
         </div>
         <a href="#contact" className="nav-cta">
@@ -111,10 +114,10 @@ function Hero() {
             {[...Array(5)].map((_, i) => <Icon.star key={i} />)}
           </div>
           <div className="hero-meta-text">
-            <strong>4.9/5</strong> from 20+ medspa owners
+            <strong>4.9/5</strong> from 38+ medspa owners
           </div>
           <div className="hero-meta-text" style={{display:'flex',alignItems:'center',gap:'8px'}}>
-            <Icon.google /> Google verified partner
+            <Icon.meta /> Meta verified partner
           </div>
         </div>
       </div>
@@ -157,16 +160,16 @@ function Stats() {
     if (ref.current) io.observe(ref.current);
     return () => io.disconnect();
   }, []);
-  const spend = useCountUp(124, { start });
+  const spend = useCountUp(224, { start });
   const clients = useCountUp(38, { start });
-  const reviews = useCountUp(23, { start });
+  const reviews = useCountUp(38, { start });
 
   return (
     <section className="section stats" ref={ref}>
       <div className="container">
         <div className="stats-head">
           <h2 className="reveal in">Results, <em>in numbers</em><br/>that compound.</h2>
-          <p className="reveal in d1">Built over hundreds of campaign iterations across the country. The receipts are below.</p>
+          <p className="reveal in d1">Built over hundreds of campaign iterations across the country.</p>
         </div>
         <div className="stats-grid">
           <div className="stat">
@@ -185,9 +188,9 @@ function Stats() {
           </div>
           <div className="stat">
             <div className="stat-num">
-              {reviews}<span className="suffix">★</span>
+              {reviews}<span className="suffix">+★</span>
             </div>
-            <div className="stat-label">5-star reviews</div>
+            <div className="stat-label">Meta verified 5-star reviews</div>
             <div className="stat-sub">Verified founders, owners &amp; clinical directors.</div>
           </div>
         </div>
@@ -204,7 +207,7 @@ function Cases() {
         <div className="s-head">
           <div>
             <span className="label">Case studies</span>
-            <h2 className="reveal in">Quiet rooms turned <em>fully booked</em> calendars.</h2>
+            <h2 className="reveal in">Slow weeks turned <em>fully booked</em> calendars.</h2>
           </div>
           <p className="right reveal in d1">
             Real campaigns, real numbers. Each engagement starts with an audit and a 90-day growth plan tailored to the location.
@@ -225,7 +228,7 @@ function Cases() {
               <h3 className="name">Glow &amp; <em>Co.</em> Aesthetics</h3>
               <div className="loc">Solo-owner medspa · Injectables &amp; laser</div>
               <p className="desc">
-                Owner was running boosted posts with no funnel. We rebuilt the offer ladder around a $99 first-visit consult, launched Meta + Google, and installed a follow-up sequence that recovered no-shows.
+                Owner was running boosted posts with no funnel. We rebuilt the offer ladder around a “Timeless Glow Laser Facial” signature offer, launched Meta + Google, and installed a follow-up sequence that recovered no-shows.
               </p>
               <div className="case-metrics-row">
                 <div className="m"><div className="v">412<em>%</em></div><div className="l">New patients lift</div></div>
@@ -274,9 +277,9 @@ function Cases() {
 function Services() {
   const items = [
     { n: '01', icon: <Icon.target />, t: 'Paid Acquisition', d: 'Meta & Google ad systems built around your most profitable treatments and seasonal cadence.' },
-    { n: '02', icon: <Icon.chart />, t: 'Funnels & Offers', d: 'Lead-magnet offers, landing pages, and qualification flows tuned to medspa buying behavior.' },
-    { n: '03', icon: <Icon.bolt />, t: 'Booking Automations', d: 'SMS, email & DM sequences that recover no-shows and turn cold leads into deposits paid.' },
-    { n: '04', icon: <Icon.spark />, t: 'Brand & Content', d: 'Founder-led short-form, before/after assets, and reputation pipelines that compound trust.' },
+    { n: '02', icon: <Icon.chart />, t: 'Funnels & Offers', d: 'Signature treatment offers, landing pages, and qualification flows tuned to high-ticket medspa buyers — not discount hunters.' },
+    { n: '03', icon: <Icon.bolt />, t: 'We Call & Qualify', d: 'Our trained reps call every inbound lead within minutes, qualify them, and take the deposit before they ever hit your calendar.' },
+    { n: '04', icon: <Icon.spark />, t: 'We Book The Calendar', d: 'Qualified, deposit-paid patients land directly in your booking system. You walk in, treat, and the rest feels like magic.' },
   ];
   return (
     <section className="section services-section" id="services">
@@ -352,7 +355,7 @@ function Offer() {
         <div className="s-head">
           <div>
             <span className="label" style={{color:'var(--sky-3)'}}>The offer</span>
-            <h2 className="reveal in" style={{color:'var(--paper)'}}>You bring the chair.<br/><em>We bring everything else.</em></h2>
+            <h2 className="reveal in" style={{color:'var(--paper)'}}>You do the treatments.<br/><em>We do everything else.</em></h2>
           </div>
           <p className="right reveal in d1" style={{color:'var(--sky-2)'}}>
             Most agencies hand you a dashboard and a bill. We hand you booked appointments. Two things make us different:
@@ -394,22 +397,22 @@ function Offer() {
         <div className="offer-strip reveal in d2">
           <div className="offer-strip-item">
             <span className="serif-i n">01.</span>
-            <span>We launch the ads</span>
+            <span>Ads &amp; funnel go live</span>
           </div>
           <span className="offer-arrow">→</span>
           <div className="offer-strip-item">
             <span className="serif-i n">02.</span>
-            <span>Leads come in</span>
+            <span>We call &amp; qualify</span>
           </div>
           <span className="offer-arrow">→</span>
           <div className="offer-strip-item">
             <span className="serif-i n">03.</span>
-            <span>Our reps call & qualify</span>
+            <span>Deposit taken, booked</span>
           </div>
           <span className="offer-arrow">→</span>
           <div className="offer-strip-item highlight">
             <span className="serif-i n">04.</span>
-            <span>Patient walks in your door</span>
+            <span>Patient walks in. You treat.</span>
           </div>
         </div>
       </div>
@@ -437,11 +440,11 @@ function Reviews() {
       n: 'Sasha Lim', r: 'CMO · Atelier Beauty Group', c: '#1B3457'
     },
     {
-      q: "They told me to <em>stop</em> running a campaign that wasn't profitable. That alone was worth the retainer.",
-      n: 'Kai Bennett', r: 'Owner · Cove Aesthetics', c: '#0E2244'
+      q: "Their team calls every lead within minutes and takes the deposit before they ever hit our calendar. <em>Show rates jumped overnight.</em>",
+      n: 'Alyssa Park', r: 'Owner · Cove Aesthetics', c: '#0E2244'
     },
     {
-      q: "Three locations, one system, <em>zero chaos</em>. I'd recommend Ignited Spa to any operator scaling past a single chair.",
+      q: "Three locations, one system, <em>zero chaos</em>. I'd recommend Ignited Spa to any operator looking to scale past one location.",
       n: 'Daniela Reyes', r: 'CEO · Reyes Med Group', c: '#6FA0CB'
     },
   ];
@@ -452,13 +455,13 @@ function Reviews() {
         <div className="s-head reviews-header-row">
           <div>
             <span className="label">What owners say</span>
-            <h2 className="reveal in">Loved by the people <em>actually running</em> the rooms.</h2>
+            <h2 className="reveal in">Loved by the owners <em>actually treating</em> patients every day.</h2>
           </div>
           <div className="rating-large reveal in d1">
             <div className="stars">
               {[...Array(5)].map((_, i) => <Icon.star key={i} />)}
             </div>
-            <div className="meta"><strong>4.9 average</strong> · 23 verified 5-star reviews</div>
+            <div className="meta"><strong>4.9 average</strong> · 38+ Meta verified 5-star reviews</div>
           </div>
         </div>
         <div className="reviews-grid">
@@ -508,9 +511,9 @@ function CTA() {
               <div className="cta-quote-stars">
                 {[...Array(5)].map((_, i) => <Icon.star key={i} />)}
               </div>
-              <p>"They told me to <em>stop</em> running a campaign that wasn't profitable. That alone was worth the retainer."</p>
+              <p>"Best <em>marketing investment</em> we've ever made. They replaced two agencies and a part-time hire — and outperformed all three."</p>
               <div className="cta-quote-who">
-                <strong>Kai Bennett</strong> · Owner, Cove Aesthetics
+                <strong>Marcus Calle</strong> · Founder, Glow &amp; Co.
               </div>
             </div>
           </div>
@@ -534,7 +537,7 @@ function Footer() {
               <span className="logo-mark"></span>
               <span>Ignited<span className="serif-i" style={{marginLeft:'4px', color:'var(--sky-3)'}}>Spa</span></span>
             </div>
-            <p className="blurb">B2B performance marketing for medical spas. Built by operators who've sat in your chair.</p>
+            <p className="blurb">B2B performance marketing for medical spas. We run the ads, call the leads, take the deposit, and book your calendar.</p>
           </div>
           <div>
             <h4>Agency</h4>
