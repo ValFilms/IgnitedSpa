@@ -57,7 +57,7 @@ function Nav() {
   return (
     <nav className={"nav " + (scrolled ? "scrolled" : "")}>
       <div className="container nav-inner">
-        <a href="#" className="logo">
+        <a href="index.html" className="logo" aria-label="Ignited Spa home">
           <span className="logo-mark"></span>
           <span>Ignited<span className="serif-i" style={{marginLeft:'4px', color:'var(--navy-2)'}}>Spa</span></span>
         </a>

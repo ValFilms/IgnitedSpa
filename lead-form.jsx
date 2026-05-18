@@ -2,7 +2,9 @@
 const { useState: useStateLF, useEffect: useEffectLF, useRef: useRefLF } = React;
 
 const STORAGE_KEY = 'ignited_spa_leads';
+const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/tjeTjvRXWK5MrsLV7eGi/webhook-trigger/a7853cd6-e4fc-49aa-a3b7-b29e794cb4ba';
 
+// ── Save to localStorage (backup) ──────────────────────────────────────────
 function saveLead(lead) {
   try {
     const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -11,42 +13,98 @@ function saveLead(lead) {
   } catch (e) {}
 }
 
+// ── Send to GoHighLevel via webhook ────────────────────────────────────────
+async function sendToGHL(data) {
+  const nameParts = (data.name || '').trim().split(/\s+/);
+  const firstName = nameParts[0] || '';
+  const lastName  = nameParts.slice(1).join(' ') || '';
+
+  const payload = {
+    // GHL standard contact fields
+    firstName,
+    lastName,
+    name:        data.name,
+    email:       data.email,
+    phone:       data.phone,
+    companyName: data.spa,
+
+    // Location
+    city: data.city,
+
+    // Qualification fields (map these to custom fields in your GHL workflow)
+    monthly_revenue:  data.revenue,
+    current_ad_spend: data.spend,
+    primary_goal:     data.goal,
+    notes:            data.notes || '',
+
+    // Meta
+    source:      'Ignited Spa Website',
+    page_url:    typeof window !== 'undefined' ? window.location.href : '',
+    submittedAt: new Date().toISOString(),
+    tags:        ['ignited-spa-lead', 'website-form'],
+  };
+
+  const res = await fetch(GHL_WEBHOOK, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(payload),
+  });
+
+  if (!res.ok) throw new Error('Webhook responded with ' + res.status);
+  return res;
+}
+
 function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 function validPhone(p) { return p.replace(/\D/g,'').length >= 10; }
 
-const REV_RANGES = ['Under $30k / mo', '$30k – $75k / mo', '$75k – $200k / mo', '$200k+ / mo'];
-const SPEND_RANGES = ['Not running ads yet', 'Under $2k / mo', '$2k – $10k / mo', '$10k+ / mo'];
-const GOALS = ['More new patients', 'Fill underbooked days', 'Launch a new treatment', 'Scale to more locations'];
+const REV_RANGES   = ['Under $30k / mo', '$30k \u2013 $75k / mo', '$75k \u2013 $200k / mo', '$200k+ / mo'];
+const SPEND_RANGES = ['Not running ads yet', 'Under $2k / mo', '$2k \u2013 $10k / mo', '$10k+ / mo'];
+const GOALS        = ['More new patients', 'Fill underbooked days', 'Launch a new treatment', 'Scale to more locations'];
 
 function LeadForm({ variant = 'inline', onDone }) {
-  const [step, setStep] = useStateLF(0);
+  const [step,       setStep]       = useStateLF(0);
+  const [submitting, setSubmitting] = useStateLF(false);
   const [data, setData] = useStateLF({
     name: '', email: '', phone: '',
     spa: '', city: '', revenue: '',
     spend: '', goal: '', notes: ''
   });
-  const [err, setErr] = useStateLF('');
+  const [err,  setErr]  = useStateLF('');
   const [done, setDone] = useStateLF(false);
 
   const set = (k, v) => setData(d => ({...d, [k]: v}));
 
-  const next = () => {
+  const next = async () => {
     setErr('');
+
     if (step === 0) {
-      if (!data.name.trim()) return setErr('Tell us your name.');
-      if (!validEmail(data.email)) return setErr('A valid email keeps you in the loop.');
-      if (!validPhone(data.phone)) return setErr('We use phone for the strategy call only.');
+      if (!data.name.trim())        return setErr('Tell us your name.');
+      if (!validEmail(data.email))  return setErr('A valid email keeps you in the loop.');
+      if (!validPhone(data.phone))  return setErr('We use phone for the strategy call only.');
     }
     if (step === 1) {
-      if (!data.spa.trim()) return setErr('Your spa name helps us prep the audit.');
-      if (!data.city.trim()) return setErr('City helps us check market fit.');
-      if (!data.revenue) return setErr('Pick a range — it stays confidential.');
+      if (!data.spa.trim())   return setErr('Your spa name helps us prep the audit.');
+      if (!data.city.trim())  return setErr('City helps us check market fit.');
+      if (!data.revenue)      return setErr('Pick a range \u2014 it stays confidential.');
     }
     if (step === 2) {
       if (!data.spend) return setErr('Pick your current ad spend range.');
-      if (!data.goal) return setErr('Pick your primary goal.');
-      // submit
-      saveLead(data);
+      if (!data.goal)  return setErr('Pick your primary goal.');
+
+      setSubmitting(true);
+      try {
+        // Fire both in parallel; localStorage never throws
+        await Promise.allSettled([
+          sendToGHL(data),
+          Promise.resolve(saveLead(data)),
+        ]);
+      } catch (e) {
+        // Webhook failure is non-blocking — lead still saved locally
+        console.warn('GHL webhook error:', e);
+      } finally {
+        setSubmitting(false);
+      }
+
       setDone(true);
       onDone?.();
       return;
@@ -89,45 +147,49 @@ function LeadForm({ variant = 'inline', onDone }) {
       </div>
 
       <div className="lead-step-label">
-        Step {step + 1} of 3 — {['About you', 'About your spa', 'About your growth'][step]}
+        Step {step + 1} of 3 \u2014 {['About you', 'About your spa', 'About your growth'][step]}
       </div>
 
       {step === 0 && (
         <div className="lead-fields">
-          <Field label="Your name" v={data.name} onChange={v=>set('name',v)} placeholder="Jane Doe" />
-          <Field label="Email" v={data.email} onChange={v=>set('email',v)} placeholder="you@yourmedspa.com" type="email" />
-          <Field label="Phone" v={data.phone} onChange={v=>set('phone',v)} placeholder="(555) 123-4567" type="tel" />
+          <Field label="Your name"  v={data.name}  onChange={v=>set('name',v)}  placeholder="Jane Doe" />
+          <Field label="Email"      v={data.email} onChange={v=>set('email',v)} placeholder="you@yourmedspa.com" type="email" />
+          <Field label="Phone"      v={data.phone} onChange={v=>set('phone',v)} placeholder="(555) 123-4567"     type="tel" />
         </div>
       )}
 
       {step === 1 && (
         <div className="lead-fields">
-          <Field label="Medspa name" v={data.spa} onChange={v=>set('spa',v)} placeholder="Glow & Co. Aesthetics" />
-          <Field label="City / state" v={data.city} onChange={v=>set('city',v)} placeholder="Scottsdale, AZ" />
+          <Field label="Medspa name"   v={data.spa}     onChange={v=>set('spa',v)}     placeholder="Glow & Co. Aesthetics" />
+          <Field label="City / state"  v={data.city}    onChange={v=>set('city',v)}    placeholder="Scottsdale, AZ" />
           <Choice label="Monthly revenue (confidential)" options={REV_RANGES} value={data.revenue} onChange={v=>set('revenue',v)} />
         </div>
       )}
 
       {step === 2 && (
         <div className="lead-fields">
-          <Choice label="Current ad spend" options={SPEND_RANGES} value={data.spend} onChange={v=>set('spend',v)} />
-          <Choice label="Primary goal for the next 90 days" options={GOALS} value={data.goal} onChange={v=>set('goal',v)} />
-          <Field label="Anything else? (optional)" v={data.notes} onChange={v=>set('notes',v)} placeholder="Launching a new injector, opening 2nd location, etc." textarea />
+          <Choice label="Current ad spend"                  options={SPEND_RANGES} value={data.spend} onChange={v=>set('spend',v)} />
+          <Choice label="Primary goal for the next 90 days" options={GOALS}        value={data.goal}  onChange={v=>set('goal',v)} />
+          <Field  label="Anything else? (optional)" v={data.notes} onChange={v=>set('notes',v)} placeholder="Launching a new injector, opening 2nd location, etc." textarea />
         </div>
       )}
 
       {err && <div className="lead-error">{err}</div>}
 
       <div className="lead-actions">
-        {step > 0 && <button type="button" className="lead-back" onClick={back}>← Back</button>}
-        <button type="button" className="lead-next" onClick={next}>
-          {step === 2 ? 'Submit & get my audit' : 'Continue'}
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        {step > 0 && <button type="button" className="lead-back" onClick={back} disabled={submitting}>\u2190 Back</button>}
+        <button type="button" className="lead-next" onClick={next} disabled={submitting}>
+          {submitting
+            ? <><span className="lead-spinner"></span> Sending\u2026</>
+            : <>{step === 2 ? 'Submit & get my audit' : 'Continue'}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </>
+          }
         </button>
       </div>
 
       <div className="lead-trust">
-        🔒 Your info stays with us. No spam, no sharing — ever.
+        \uD83D\uDD12 Your info stays with us. No spam, no sharing \u2014 ever.
       </div>
     </div>
   );
@@ -178,12 +240,10 @@ function LeadPill() {
   }, [open]);
 
   useEffectLF(() => {
-    const handler = () => setOpen(true);
     document.querySelectorAll('a[href="#contact"], a.btn-primary').forEach(a => {
       if (a.dataset.leadHook) return;
       a.dataset.leadHook = '1';
       a.addEventListener('click', (e) => {
-        // Let inline form anchor still work; only intercept if NOT inside the form section
         const inForm = a.closest('.cta-section');
         if (inForm) return;
         e.preventDefault();

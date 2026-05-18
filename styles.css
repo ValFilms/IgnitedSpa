@@ -837,6 +837,15 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
 .lead-next:hover { transform: translateY(-1px); background: var(--navy-3); }
 .lead-next svg { transition: transform 0.3s; }
 .lead-next:hover svg { transform: translateX(3px); }
+.lead-next:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+.lead-spinner {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  animation: spin 0.7s linear infinite;
+  display: inline-block; flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .lead-trust {
   font-size: 12px; color: var(--mute);
