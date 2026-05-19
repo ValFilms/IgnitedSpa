@@ -1,52 +1,34 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Glow & Co. Aesthetics Case Study | 8.4× ROAS in 90 Days | Ignited Spa</title>
-<meta name="description" content="How Ignited Spa helped a solo Scottsdale medspa go from 15 consults/month to a fully booked calendar — 8.4× ROAS, 412% new patient lift, $38 cost per consult." />
-<meta name="keywords" content="medspa marketing case study, scottsdale medspa marketing results, medical spa advertising ROI, medspa paid ads case study" />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://www.ignitedspa.com/case-study-glow-co" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23E63946'/%3E%3C/svg%3E" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Glow & Co. Aesthetics: 8.4× ROAS in 90 Days" />
-<meta property="og:description" content="From boosted posts and empty chairs to a fully booked Scottsdale medspa. Here's exactly what we built." />
-<meta property="og:url" content="https://www.ignitedspa.com/case-study-glow-co" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Glow & Co. Aesthetics: 8.4× ROAS in 90 Days",
-  "description": "How Ignited Spa helped a solo Scottsdale medspa achieve 8.4x return on ad spend and 412% new patient growth.",
-  "author": { "@type": "Organization", "name": "Ignited Spa" },
-  "publisher": { "@type": "Organization", "name": "Ignited Spa", "url": "https://www.ignitedspa.com" },
-  "url": "https://www.ignitedspa.com/case-study-glow-co",
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ignitedspa.com"},
-      {"@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://www.ignitedspa.com/#work"},
-      {"@type": "ListItem", "position": 3, "name": "Glow & Co. Aesthetics", "item": "https://www.ignitedspa.com/case-study-glow-co"}
-    ]
-  }
+// Ignited Spa — App
+const { useEffect, useRef } = React;
+
+function App() {
+  const root = useRef(null);
+
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal:not(.in)');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    els.forEach(el => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={root}>
+      <Nav />
+      <Hero />
+      <Marquee />
+      <Stats />
+      <Cases />
+      <Services />
+      <Process />
+      <Offer />
+      <Reviews />
+      <CTA />
+      <Footer />
+      <LeadPill />
+    </div>
+  );
 }
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="about.css" />
-<link rel="stylesheet" href="pages.css" />
-</head>
-<body>
-<div id="root"></div>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" data-presets="env,react" src="lead-form.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="sections.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="page-components.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="case-study-glow-co.jsx"></script>
-</body>
-</html>
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
