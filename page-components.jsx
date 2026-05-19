@@ -1,288 +1,128 @@
-// Ignited Spa — Lead capture
-const { useState: useStateLF, useEffect: useEffectLF, useRef: useRefLF } = React;
-
-const STORAGE_KEY = 'ignited_spa_leads';
-const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/tjeTjvRXWK5MrsLV7eGi/webhook-trigger/960bac93-4fa0-402e-9b19-fa2883fb90a4';
-
-// ── Save to localStorage (backup) ──────────────────────────────────────────
-function saveLead(lead) {
-  try {
-    const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    existing.push({ ...lead, ts: new Date().toISOString() });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-  } catch (e) {}
+/* ====== LEGAL PAGE STYLES ====== */
+.legal-nav {
+  position: sticky; top: 0; z-index: 50;
+  padding: 18px 0;
+  background: rgba(245, 242, 234, 0.92);
+  backdrop-filter: saturate(1.4) blur(18px);
+  -webkit-backdrop-filter: saturate(1.4) blur(18px);
+  border-bottom: 1px solid var(--line);
 }
-
-// ── Send to GoHighLevel via webhook ────────────────────────────────────────
-async function sendToGHL(data) {
-  const nameParts = (data.name || '').trim().split(/\s+/);
-  const firstName = nameParts[0] || '';
-  const lastName  = nameParts.slice(1).join(' ') || '';
-
-  const payload = {
-    // GHL standard contact fields
-    firstName,
-    lastName,
-    name:        data.name,
-    email:       data.email,
-    phone:       data.phone,
-    companyName: data.spa,
-
-    // Location
-    city: data.city,
-
-    // Qualification fields (map these to custom fields in your GHL workflow)
-    monthly_revenue:  data.revenue,
-    current_ad_spend: data.spend,
-    primary_goal:     data.goal,
-    notes:            data.notes || '',
-
-    // Meta
-    source:      'Ignited Spa Website',
-    page_url:    typeof window !== 'undefined' ? window.location.href : '',
-    submittedAt: new Date().toISOString(),
-    tags:        ['ignited-spa-lead', 'website-form'],
-  };
-
-  const res = await fetch(GHL_WEBHOOK, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error('Webhook responded with ' + res.status);
-  return res;
+.legal-nav .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 32px; }
+.legal-nav .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; letter-spacing: -0.02em; font-family: 'Geist', sans-serif; color: var(--ink); text-decoration: none; }
+.legal-nav .logo-mark {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #FFE3B5 0%, #FF8A4C 35%, #C13D2A 70%, #061530 100%);
+  box-shadow: 0 0 0 1px rgba(8,21,44,0.08), 0 6px 20px -6px rgba(193, 61, 42, 0.6);
+  flex-shrink: 0;
 }
-
-function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-function validPhone(p) { return p.replace(/\D/g,'').length >= 10; }
-
-const REV_RANGES   = ['Under $10k / mo', '$10k \u2013 $30k / mo', '$30k \u2013 $50k / mo', '$50k+ / mo'];
-const SPEND_RANGES = ['Not running ads yet', 'Under $2k / mo', '$2k \u2013 $10k / mo', '$10k+ / mo'];
-const GOALS        = [
-  'Bring in more qualified new patients',
-  'Increase high-value package sales',
-  'Fill provider schedules consistently',
-  'Launch a new service or device',
-];
-
-function LeadForm({ variant = 'inline', onDone }) {
-  const [step,       setStep]       = useStateLF(0);
-  const [submitting, setSubmitting] = useStateLF(false);
-  const [data, setData] = useStateLF({
-    name: '', email: '', phone: '',
-    spa: '', city: '', revenue: '',
-    spend: '', goal: '', notes: ''
-  });
-  const [err,  setErr]  = useStateLF('');
-  const [done, setDone] = useStateLF(false);
-
-  const set = (k, v) => setData(d => ({...d, [k]: v}));
-
-  const next = async () => {
-    setErr('');
-
-    if (step === 0) {
-      if (!data.name.trim())        return setErr('Tell us your name.');
-      if (!validEmail(data.email))  return setErr('A valid email keeps you in the loop.');
-      if (!validPhone(data.phone))  return setErr('We use phone for the strategy call only.');
-    }
-    if (step === 1) {
-      if (!data.spa.trim())   return setErr('Your spa name helps us prep the audit.');
-      if (!data.city.trim())  return setErr('City helps us check market fit.');
-      if (!data.revenue)      return setErr('Pick a range \u2014 it stays confidential.');
-    }
-    if (step === 2) {
-      if (!data.spend) return setErr('Pick your current ad spend range.');
-      if (!data.goal)  return setErr('Pick your primary goal.');
-
-      setSubmitting(true);
-      try {
-        // Fire both in parallel; localStorage never throws
-        await Promise.allSettled([
-          sendToGHL(data),
-          Promise.resolve(saveLead(data)),
-        ]);
-      } catch (e) {
-        // Webhook failure is non-blocking — lead still saved locally
-        console.warn('GHL webhook error:', e);
-      } finally {
-        setSubmitting(false);
-      }
-
-      setDone(true);
-      onDone?.();
-      return;
-    }
-    setStep(s => s + 1);
-  };
-
-  const back = () => { setErr(''); setStep(s => Math.max(0, s - 1)); };
-
-  if (done) {
-    return (
-      <div className={"lead-form lead-" + variant + " lead-done"}>
-        <div className="lead-success">
-          <div className="success-mark">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
-          </div>
-          <h3 className="serif"><em>You're on the list.</em></h3>
-          <p>A strategist will reach out within 24 hours to schedule your audit. Check <strong>{data.email}</strong> for a confirmation.</p>
-          <div className="success-meta">
-            <span>· Free, no contract</span>
-            <span>· 20-min call</span>
-            <span>· Medspa-only</span>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={"lead-form lead-" + variant}>
-      <div className="lead-progress">
-        {[0,1,2].map(i => (
-          <div key={i} className={"lead-dot " + (step >= i ? 'on' : '') + (step === i ? ' active' : '')}>
-            <span>{i+1}</span>
-          </div>
-        ))}
-        <div className="lead-progress-line"><div className="lead-progress-fill" style={{width: `${((step)/2)*100}%`}}></div></div>
-      </div>
-
-      <div className="lead-step-label">
-        Step {step + 1} of 3 &mdash; {['About you', 'About your spa', 'About your growth'][step]}
-      </div>
-
-      {step === 0 && (
-        <div className="lead-fields">
-          <Field label="Your name"  v={data.name}  onChange={v=>set('name',v)}  placeholder="Jane Doe" />
-          <Field label="Email"      v={data.email} onChange={v=>set('email',v)} placeholder="you@yourmedspa.com" type="email" />
-          <Field label="Phone"      v={data.phone} onChange={v=>set('phone',v)} placeholder="(555) 123-4567"     type="tel" />
-        </div>
-      )}
-
-      {step === 1 && (
-        <div className="lead-fields">
-          <Field label="Medspa name"   v={data.spa}     onChange={v=>set('spa',v)}     placeholder="Glow & Co. Aesthetics" />
-          <Field label="City / state"  v={data.city}    onChange={v=>set('city',v)}    placeholder="Scottsdale, AZ" />
-          <Choice label="Monthly revenue (confidential)" options={REV_RANGES} value={data.revenue} onChange={v=>set('revenue',v)} />
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="lead-fields">
-          <Choice label="Current ad spend"                  options={SPEND_RANGES} value={data.spend} onChange={v=>set('spend',v)} />
-          <Choice label="Primary goal for the next 90 days" options={GOALS}        value={data.goal}  onChange={v=>set('goal',v)} />
-          <Field  label="Anything else? (optional)" v={data.notes} onChange={v=>set('notes',v)} placeholder="Launching a new injector, opening 2nd location, etc." textarea />
-        </div>
-      )}
-
-      {err && <div className="lead-error">{err}</div>}
-
-      <div className="lead-actions">
-        {step > 0 && <button type="button" className="lead-back" onClick={back} disabled={submitting}>&larr; Back</button>}
-        <button type="button" className="lead-next" onClick={next} disabled={submitting}>
-          {submitting
-            ? <><span className="lead-spinner"></span> Sending&hellip;</>
-            : <>{step === 2 ? 'Submit & get my audit' : 'Continue'}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </>
-          }
-        </button>
-      </div>
-
-      <div className="lead-trust">
-        &#128274; Your info stays with us. No spam, no sharing &mdash; ever.
-      </div>
-    </div>
-  );
+.legal-nav .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--mute); }
+.legal-nav .nav-links a { transition: color 0.2s; color: var(--mute); text-decoration: none; }
+.legal-nav .nav-links a:hover { color: var(--ink); }
+.legal-nav .nav-cta {
+  background: var(--navy-2); color: var(--paper);
+  padding: 10px 20px; border-radius: 999px; font-size: 14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  transition: transform 0.3s, background 0.3s; text-decoration: none;
 }
+.legal-nav .nav-cta:hover { transform: translateY(-1px); background: var(--navy-3); }
+.legal-nav .nav-cta .dot { width: 6px; height: 6px; border-radius: 50%; background: #5BE36A; box-shadow: 0 0 8px #5BE36A; }
 
-function Field({ label, v, onChange, placeholder, type='text', textarea }) {
-  return (
-    <label className="field">
-      <span className="field-label">{label}</span>
-      {textarea
-        ? <textarea value={v} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={3} />
-        : <input type={type} value={v} onChange={e=>onChange(e.target.value)} placeholder={placeholder} />}
-    </label>
-  );
+/* Hero band for legal pages */
+.legal-hero {
+  padding: 100px 0 72px;
+  background: var(--navy-3);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
 }
-
-function Choice({ label, options, value, onChange }) {
-  return (
-    <div className="field">
-      <span className="field-label">{label}</span>
-      <div className="choice-grid">
-        {options.map(o => (
-          <button key={o} type="button" className={"choice " + (value === o ? 'sel' : '')} onClick={()=>onChange(o)}>
-            <span className="choice-radio"></span>
-            <span>{o}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
+.legal-hero::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(700px 400px at 90% 50%, rgba(157,192,222,0.15), transparent 70%);
 }
-
-// ============== FLOATING PILL + MODAL ==============
-function LeadPill() {
-  const [open, setOpen] = useStateLF(false);
-  const [show, setShow] = useStateLF(false);
-
-  useEffectLF(() => {
-    const onScroll = () => setShow(window.scrollY > 600);
-    window.addEventListener('scroll', onScroll);
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffectLF(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
-
-  useEffectLF(() => {
-    document.querySelectorAll('a[href="#contact"], a.btn-primary').forEach(a => {
-      if (a.dataset.leadHook) return;
-      a.dataset.leadHook = '1';
-      a.addEventListener('click', (e) => {
-        const inForm = a.closest('.cta-section');
-        if (inForm) return;
-        e.preventDefault();
-        setOpen(true);
-      });
-    });
-    return () => {};
-  }, []);
-
-  return (
-    <>
-      <button className={"lead-pill " + (show ? 'show' : '') + (open ? ' hidden' : '')} onClick={() => setOpen(true)}>
-        <span className="lead-pill-dot"></span>
-        <span>Free 20-min audit</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </button>
-
-      {open && (
-        <div className="lead-modal-bg" onClick={(e) => { if (e.target.classList.contains('lead-modal-bg')) setOpen(false); }}>
-          <div className="lead-modal">
-            <button className="lead-close" onClick={() => setOpen(false)} aria-label="Close">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <div className="lead-modal-head">
-              <span className="eyebrow"><span className="pulse"></span>$1,000 ad spend on us</span>
-              <h3 className="serif">Let's see what's <em>actually possible</em> for your spa.</h3>
-              <p>20 minutes. We audit your funnel, ads, and offers. If we're a fit, we cover your first $1,000 in ad spend and our sales team books the appointments for you.</p>
-            </div>
-            <LeadForm variant="modal" />
-          </div>
-        </div>
-      )}
-    </>
-  );
+.legal-hero-inner { position: relative; z-index: 2; }
+.legal-crumb { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sky-2); margin-bottom: 16px; }
+.legal-crumb a { color: var(--sky-3); text-decoration: none; }
+.legal-crumb a:hover { color: var(--paper); }
+.legal-hero h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(40px, 7vw, 80px);
+  line-height: 0.95; letter-spacing: -0.02em;
+  margin: 0 0 16px; font-weight: 400;
+  color: var(--paper);
 }
+.legal-hero h1 em { font-style: italic; color: var(--sky-3); }
+.legal-hero .meta { font-size: 14px; color: var(--sky-2); }
 
-Object.assign(window, { LeadForm, LeadPill });
+/* Content area */
+.legal-content { padding: 80px 0 120px; }
+.legal-layout { display: grid; grid-template-columns: 240px 1fr; gap: 80px; align-items: start; }
+
+/* TOC sidebar */
+.legal-toc {
+  position: sticky; top: 88px;
+  background: var(--paper); border: 1px solid var(--line);
+  border-radius: 18px; padding: 24px;
+}
+.legal-toc h4 {
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mute); margin: 0 0 14px; font-weight: 500;
+}
+.legal-toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+.legal-toc ul a {
+  font-size: 13px; color: var(--mute);
+  text-decoration: none; display: block;
+  padding: 6px 10px; border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  line-height: 1.4;
+}
+.legal-toc ul a:hover { background: rgba(8,21,44,0.05); color: var(--ink); }
+
+/* Body content */
+.legal-body { max-width: 780px; }
+.legal-body h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px; letter-spacing: -0.01em; font-weight: 400;
+  margin: 64px 0 16px; padding-top: 16px;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+}
+.legal-body h2:first-child { margin-top: 0; border-top: none; }
+.legal-body h3 {
+  font-size: 17px; font-weight: 600; margin: 32px 0 10px;
+  color: var(--ink); letter-spacing: -0.01em;
+}
+.legal-body p { font-size: 15px; color: #3A4A62; line-height: 1.7; margin: 0 0 16px; }
+.legal-body ul, .legal-body ol {
+  padding-left: 20px; margin: 0 0 16px;
+}
+.legal-body li { font-size: 15px; color: #3A4A62; line-height: 1.7; margin-bottom: 6px; }
+.legal-body strong { color: var(--ink); font-weight: 600; }
+.legal-body a { color: var(--navy-2); text-decoration: underline; text-underline-offset: 3px; }
+.legal-body a:hover { color: var(--navy-3); }
+.legal-callout {
+  background: var(--sky-1); border: 1px solid var(--sky-2);
+  border-radius: 14px; padding: 20px 24px; margin: 24px 0;
+}
+.legal-callout p { margin: 0; color: var(--navy-2); font-size: 14px; }
+
+/* Legal footer */
+.legal-footer-bar { background: var(--navy-3); color: var(--sky-2); padding: 60px 0 40px; border-top: 1px solid rgba(255,255,255,0.08); }
+.legal-footer-bar .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+.legal-footer-bar .logo { display: flex; align-items: center; gap: 10px; font-size: 20px; letter-spacing: -0.02em; font-family: 'Geist', sans-serif; color: var(--paper); margin-bottom: 12px; }
+.legal-footer-bar .blurb { font-size: 14px; color: var(--sky-2); max-width: 280px; line-height: 1.55; }
+.legal-footer-bar h4 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); margin: 0 0 16px; font-weight: 500; }
+.legal-footer-bar ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.legal-footer-bar ul a { font-size: 14px; color: var(--sky-2); text-decoration: none; transition: color 0.2s; }
+.legal-footer-bar ul a:hover { color: var(--paper); }
+.legal-footer-bar .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: rgba(255,255,255,0.5); flex-wrap: wrap; gap: 12px; }
+
+@media (max-width: 960px) {
+  .legal-layout { grid-template-columns: 1fr; gap: 40px; }
+  .legal-toc { position: static; }
+  .legal-footer-bar .footer-grid { grid-template-columns: 1fr 1fr; }
+  .legal-nav .nav-links { display: none; }
+}
+@media (max-width: 600px) {
+  .legal-footer-bar .footer-grid { grid-template-columns: 1fr; }
+  .legal-footer-bar .footer-bottom { flex-direction: column; align-items: flex-start; }
+}

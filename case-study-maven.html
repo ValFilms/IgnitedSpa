@@ -1,44 +1,88 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Lumen Aesthetic Studio Case Study | +317% Revenue in 6 Months | Ignited Spa</title>
-<meta name="description" content="How Ignited Spa unified marketing across two Austin medspa locations and grew monthly booked revenue by 317% in 6 months. Real numbers, real strategy." />
-<meta name="keywords" content="multi-location medspa marketing, austin medspa marketing results, aesthetic studio growth, medspa marketing agency case study" />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://www.ignitedspa.com/case-study-lumen" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23E63946'/%3E%3C/svg%3E" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="Lumen Aesthetic Studio: +317% Revenue in 6 Months" />
-<meta property="og:description" content="Two Austin locations, inconsistent patient flow, no unified system. Here's how we fixed it." />
-<meta property="og:url" content="https://www.ignitedspa.com/case-study-lumen" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Lumen Aesthetic Studio: +317% Monthly Booked Revenue in 6 Months",
-  "description": "How Ignited Spa unified marketing across two Austin medspa locations and tripled monthly booked revenue.",
-  "author": { "@type": "Organization", "name": "Ignited Spa" },
-  "publisher": { "@type": "Organization", "name": "Ignited Spa", "url": "https://www.ignitedspa.com" },
-  "url": "https://www.ignitedspa.com/case-study-lumen"
-}
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="about.css" />
-<link rel="stylesheet" href="pages.css" />
-</head>
-<body>
-<div id="root"></div>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" data-presets="env,react" src="lead-form.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="sections.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="page-components.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="case-study-lumen.jsx"></script>
-</body>
-</html>
+(function () {
+  const { useEffect } = React;
+
+  function CaseStudyLumen() {
+    usePageReveal();
+    return (
+      <>
+        <Nav />
+        <main id="main-content">
+          <PageHero
+            crumbs={[
+              { href: 'index.html', label: 'Home' },
+              { href: 'index.html#work', label: 'Case studies' },
+              { label: 'Lumen Aesthetic Studio' },
+            ]}
+            eyebrow="Case Study · Austin, TX · 2 Locations"
+            h1="Two locations.<br/>One system.<br/><em>+317% revenue.</em>"
+            sub="When Dr. Priya Shah opened her second Austin location, she expected momentum. Instead, she got inconsistency. Here's how we unified the marketing engine across both clinics — and what happened next."
+            stats={[
+              { num: '+317<span class="ah-suf">%</span>', label: 'Monthly booked revenue' },
+              { num: '80<span class="ah-suf">+</span>', label: 'Consults/month (was 15)' },
+              { num: '6<span class="ah-suf">mo</span>', label: 'Time to result' },
+              { num: '2.9<span class="ah-suf">×</span>', label: 'Lower CPL vs. prior efforts' },
+            ]}
+          />
+
+          <section className="section" style={{ background: 'var(--paper)' }}>
+            <div className="container">
+              <div className="page-layout">
+                <div className="page-body">
+
+                  <h3>The <em>challenge</em></h3>
+                  <p>Dr. Shah's original Lumen Aesthetic Studio location had grown steadily over three years on a combination of referrals, organic social, and a modest ad budget. When she opened a second location on the other side of Austin, she assumed the momentum would transfer. It didn't.</p>
+                  <p>Location two was generating half the patient volume despite being in an equally strong market. The two locations were running separate ad accounts, separate landing pages, and separate intake processes — meaning the algorithm had no shared data, no cross-location learning, and no unified story to tell potential patients. A patient searching "medspa Austin" might see two different ads, two different offers, and arrive at two different web pages. The system was working against itself.</p>
+                  <p>Staff time was also being consumed by the volume discrepancy. The original location was overbooked; the new one had availability it couldn't fill. Without a centralized intake and routing system, leads at the wrong location either dropped off or required manual effort to redirect.</p>
+
+                  <h3>What we <em>built</em></h3>
+                  <p><strong>Unified campaign architecture.</strong> We consolidated both locations under a single Meta Business account, enabling shared audience learning, shared pixel data, and algorithmic optimization across the full Austin market. Rather than splitting budget and diluting data, we let Meta decide which location to serve each ad to based on geographic and behavioral signals.</p>
+                  <p><strong>Location-intelligent creative.</strong> Each ad included location-aware elements — "Which Lumen is closest to you?" — with dynamic variants that highlighted each clinic's unique character. The North Austin location leaned into a neighborhood feel; the South Austin location emphasized the flagship experience. One campaign, two distinct identities.</p>
+                  <p><strong>Shared new patient offer.</strong> We created a "New Patient Intro Facial" at $99 that ran across both locations simultaneously. One offer, consistent positioning, maximum ad spend efficiency. The offer was designed to generate first visits and begin the patient relationship — not to produce one-time discount patients.</p>
+                  <p><strong>Centralized intake + smart routing.</strong> Our sales team handled inbound from both locations through a shared CRM. When a lead came in, they were routed to the nearest available slot across either clinic — filling gaps at the newer location without requiring any manual effort from the in-house team.</p>
+                  <p><strong>Location-level reporting.</strong> Dr. Shah received a weekly dashboard showing cost per patient, show rate, and revenue attributed to ads — broken down by location. For the first time, she could see exactly what each dollar of ad spend was producing at each clinic.</p>
+
+                  <PagePull
+                    quote="We went from 15 consults a month to over <em>80 in the first quarter.</em> They actually understand medspa unit economics."
+                    cite="— Dr. Priya Shah, Owner, Lumen Aesthetic Studio"
+                  />
+
+                  <h3>The <em>results</em></h3>
+                  <p>Within 6 months, combined monthly booked revenue across both locations had grown 317%. The newer location reached parity with the original within 4 months — and by month 6 was outperforming it on a per-appointment-slot basis. Total consults grew from ~15/month to over 80/month across both locations.</p>
+
+                  <PageMetrics items={[
+                    { val: '+317<em>%</em>', label: 'Monthly booked revenue (6 mo.)' },
+                    { val: '80<em>+</em>', label: 'Combined consults/month' },
+                    { val: '4<em>mo</em>', label: 'Location 2 reached parity' },
+                    { val: '2.9<em>×</em>', label: 'Lower cost per patient vs. prior efforts' },
+                  ]} />
+
+                  <p>The unified system also created a compounding effect: patient data, audience signals, and creative learnings from both locations fed a shared asset library. By month 6, cost per lead had dropped 34% from month 1 as the algorithm optimized against a much richer data set.</p>
+
+                </div>
+                <PageSidebar
+                  heading="Running <em>multiple</em> locations?"
+                  body="Multi-location medspa growth requires a different system than a single clinic. We've built it. Let's talk."
+                />
+              </div>
+            </div>
+          </section>
+
+          <PageRelated
+            heading="More medspa transformations."
+            items={[
+              { href: 'case-study-glow-co.html', eyebrow: 'Scottsdale, AZ · Solo owner', title: 'Glow &amp; <em>Co.</em> Aesthetics', stat: '8.4<em>×</em>', meta: 'Return on ad spend in 90 days' },
+              { href: 'case-study-maven.html', eyebrow: 'Miami, FL · Boutique flagship', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'Net new MRR from one campaign' },
+              { href: 'why-ignited-spa.html', eyebrow: 'Why Ignited Spa', title: 'What makes us <em>different</em>', stat: '4<em>×</em>', meta: 'Things no other medspa agency does' },
+            ]}
+          />
+
+          <PageCTA />
+        </main>
+        <Footer />
+        <LeadPill />
+      </>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<CaseStudyLumen />);
+})();
