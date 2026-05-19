@@ -2,11 +2,11 @@
   const Check = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   );
-  const Phone = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+  const Chart = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 4 4 5-6"/></svg>
   );
 
-  function ServiceCallQualify() {
+  function ServiceFunnelsOffers() {
     usePageReveal();
     return (
       <>
@@ -16,45 +16,39 @@
             crumbs={[
               { href: 'index.html', label: 'Home' },
               { href: 'index.html#services', label: 'Services' },
-              { label: 'Call & Qualify' },
+              { label: 'Funnels & Offers' },
             ]}
-            eyebrow="Service · In-House Sales Team · Speed-to-Lead"
-            h1="We call your leads<br/>within <em>minutes.</em><br/>You treat patients."
-            sub="The average business takes 47 hours to respond to a new inquiry. By then, the patient has booked elsewhere. Our in-house sales team responds in under 5 minutes — and doesn't stop until the appointment is booked and the deposit is paid."
-            stats={[
-              { num: '<span class="ah-suf">&lt;</span>5<span class="ah-suf">min</span>', label: 'Avg speed-to-lead' },
-              { num: '88<span class="ah-suf">%</span>', label: 'Show rate with deposits' },
-              { num: '22<span class="ah-suf">%</span>', label: 'Recovery from follow-up seq.' },
-            ]}
+            eyebrow="Service · Offer Strategy · Funnel Design"
+            h1="The offer is the ad.<br/><em>Get it wrong</em> and<br/>nothing else matters."
+            sub="Clicks don't book appointments. The right offer does. We build signature treatment offers, landing pages, and qualification flows calibrated to how medspa patients actually decide to buy."
           />
 
           <section className="section" style={{ background: 'var(--paper)' }}>
             <div className="container">
               <div className="page-layout">
                 <div className="page-body">
-                  <h3>The <em>speed-to-lead</em> problem</h3>
-                  <p>Speed-to-lead is the most consistently underestimated lever in medspa marketing. Studies across service businesses show that <strong>leads contacted within 5 minutes are 21× more likely to qualify than those contacted after 30 minutes.</strong> After an hour, that number drops dramatically again. After 24 hours, most leads are either booked elsewhere or have lost the impulse entirely.</p>
-                  <p>Most medspa owners and front desk teams simply can't respond at that speed while running a full clinic. They're in treatment rooms, on the phone with existing patients, or handling the hundred other operational demands of a busy practice. The leads pile up. The follow-up happens when there's time — which is usually not fast enough.</p>
-                  <p>We solve this by being the first call, every time.</p>
+                  <h3>The offer is <em>everything</em></h3>
+                  <p>Most medspas make the same mistake: they run ads to their homepage or a generic "book now" page. There's no specific offer, no qualification step, no reason for a cold prospect to take action today. The result is low conversion rates, wasted ad spend, and the mistaken conclusion that "ads don't work for us."</p>
+                  <p>Ads work when the offer is right. A signature offer — a specific treatment, at a specific price point, with a specific value proposition — does three things simultaneously: it attracts the right patients, pre-qualifies their intent, and gives the algorithm a clear conversion to optimize toward. We've built dozens of these offers across every medspa treatment category. We know what converts.</p>
 
                   <h3>What's <em>included</em></h3>
                   <div className="page-features reveal in">
-                    <PageFeature icon={<Phone />} title="Real-time lead response" desc="Every inbound lead triggers an immediate notification to our sales team. We call within an average of 4 minutes during business hours, and within 15 minutes outside of them." />
-                    <PageFeature icon={<Check />} title="Medspa-trained qualification scripts" desc="Our reps are trained on aesthetic medicine — treatment types, typical pricing, patient objections, and how to have a conversation that builds trust without overselling. They know the difference between botox curiosity and a ready-to-book patient." />
-                    <PageFeature icon={<Phone />} title="Deposit collection before booking" desc="We don't book appointments without a deposit. This single practice reduces no-show rates from an industry-average ~40% to under 12% for our clients. Only committed patients land on your calendar." />
-                    <PageFeature icon={<Check />} title="7-touch follow-up sequence" desc="Leads that don't immediately book enter a structured follow-up: 2 SMS, 3 emails, and 2 additional call attempts over 7 days. This sequence recovers 20–25% of leads that initially didn't convert." />
-                    <PageFeature icon={<Phone />} title="No-show recovery" desc="For patients who miss their appointment, an automatic re-booking sequence activates within 2 hours — capturing the slot before it sits empty." />
-                    <PageFeature icon={<Check />} title="CRM logging & handoff notes" desc="Every call is logged in your CRM with qualification notes. When a patient walks in, your team knows exactly who they are, what they're interested in, and what was discussed." />
+                    <PageFeature icon={<Check />} title="Signature offer creation" desc="We build a treatment-specific offer designed for your highest-margin services. Price point, positioning, headline, and value prop — all engineered for cold-traffic conversion without undermining your premium brand." />
+                    <PageFeature icon={<Chart />} title="Dedicated landing pages" desc="Every campaign has its own focused landing page — not your homepage. One offer, one call to action, one conversion goal. We design, write, and publish it." />
+                    <PageFeature icon={<Check />} title="Qualification flow design" desc="The intake form is a qualification tool, not just a data collection form. We design question sequences that filter out low-intent traffic before it reaches your calendar or our sales team." />
+                    <PageFeature icon={<Chart />} title="Treatment ladder strategy" desc="We map your treatment menu to a patient journey: entry offer → first visit conversion → upsell to higher-value treatment → recurring maintenance schedule. Every touchpoint is intentional." />
+                    <PageFeature icon={<Check />} title="A/B testing framework" desc="Headline vs. headline. Offer price vs. price. Image vs. video. We run structured tests, document the winners, and apply learnings across campaigns." />
+                    <PageFeature icon={<Chart />} title="Offer refresh cycles" desc="Offers fatigue just like creative does. We proactively cycle in new angles — seasonal hooks, limited-availability frames, new-patient positioning — to keep conversion rates from decaying." />
                   </div>
 
                   <PagePull
-                    quote="Their team calls every lead within minutes and takes the deposit before they ever hit our calendar. <em>Show rates jumped overnight.</em>"
-                    cite="— Alyssa Park, Owner, Cove Aesthetics"
+                    quote="Our calendar is finally <em>predictable</em>. I sleep better, my injectors are booked, and our deposit rate doubled."
+                    cite="— Brianna Otero, Clinical Director, Maven Skin Bar"
                   />
                 </div>
                 <PageSidebar
-                  heading="How fast are <em>your</em> leads getting called?"
-                  body="Most practices are losing 30–40% of their leads to slow follow-up. We can fix that from day one."
+                  heading="Is your offer <em>converting</em>?"
+                  body="We'll look at your current offer architecture and tell you exactly where patients are dropping off — and what to change."
                 />
               </div>
             </div>
@@ -63,9 +57,9 @@
           <PageRelated
             heading="Related services & results."
             items={[
-              { href: 'case-study-maven.html', eyebrow: 'Miami, FL', title: 'Maven <em>Skin</em> Bar', stat: '88<em>%</em>', meta: 'Show rate via deposit-first booking' },
-              { href: 'service-funnels-offers.html', eyebrow: 'Service', title: 'Funnels &amp; <em>Offers</em>', stat: '→', meta: 'Build the offer that attracts better leads' },
-              { href: 'service-book-calendar.html', eyebrow: 'Service', title: 'Book the <em>Calendar</em>', stat: '→', meta: 'Patients land in your system, not a list' },
+              { href: 'service-paid-acquisition.html', eyebrow: 'Service', title: 'Paid <em>Acquisition</em>', stat: '→', meta: 'Meta & Google ads for medspas' },
+              { href: 'case-study-maven.html', eyebrow: 'Miami, FL', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'New MRR via premium offer repositioning' },
+              { href: 'service-call-qualify.html', eyebrow: 'Service', title: 'Call &amp; <em>Qualify</em>', stat: '→', meta: 'We handle every inbound lead' },
             ]}
           />
           <PageCTA />
@@ -76,5 +70,5 @@
     );
   }
 
-  ReactDOM.createRoot(document.getElementById('root')).render(<ServiceCallQualify />);
+  ReactDOM.createRoot(document.getElementById('root')).render(<ServiceFunnelsOffers />);
 })();

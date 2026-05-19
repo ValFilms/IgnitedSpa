@@ -2,11 +2,11 @@
   const Check = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
   );
-  const Chart = () => (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 4 4 5-6"/></svg>
+  const Target = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>
   );
 
-  function ServiceFunnelsOffers() {
+  function ServicePaidAcquisition() {
     usePageReveal();
     return (
       <>
@@ -16,50 +16,55 @@
             crumbs={[
               { href: 'index.html', label: 'Home' },
               { href: 'index.html#services', label: 'Services' },
-              { label: 'Funnels & Offers' },
+              { label: 'Paid Acquisition' },
             ]}
-            eyebrow="Service · Offer Strategy · Funnel Design"
-            h1="The offer is the ad.<br/><em>Get it wrong</em> and<br/>nothing else matters."
-            sub="Clicks don't book appointments. The right offer does. We build signature treatment offers, landing pages, and qualification flows calibrated to how medspa patients actually decide to buy."
+            eyebrow="Service · Meta & Google Ads · Medspa-only"
+            h1="Paid ads built for<br/><em>medspa patients.</em><br/>Not generic leads."
+            sub="We run Meta and Google campaigns built around your most profitable treatments, your market, and the way aesthetic patients actually make buying decisions. No dental templates."
+            stats={[
+              { num: '$224<span class="ah-suf">K+</span>', label: 'Ad spend managed' },
+              { num: '38<span class="ah-suf">+</span>', label: 'Medspa campaigns run' },
+              { num: '4.9<span class="ah-suf">★</span>', label: 'Client satisfaction' },
+            ]}
           />
 
           <section className="section" style={{ background: 'var(--paper)' }}>
             <div className="container">
               <div className="page-layout">
                 <div className="page-body">
-                  <h3>The offer is <em>everything</em></h3>
-                  <p>Most medspas make the same mistake: they run ads to their homepage or a generic "book now" page. There's no specific offer, no qualification step, no reason for a cold prospect to take action today. The result is low conversion rates, wasted ad spend, and the mistaken conclusion that "ads don't work for us."</p>
-                  <p>Ads work when the offer is right. A signature offer — a specific treatment, at a specific price point, with a specific value proposition — does three things simultaneously: it attracts the right patients, pre-qualifies their intent, and gives the algorithm a clear conversion to optimize toward. We've built dozens of these offers across every medspa treatment category. We know what converts.</p>
+                  <h3>Why <em>generic ad agencies fail</em> in this space</h3>
+                  <p>Most marketing agencies run the same playbook across every vertical: a lead-gen campaign, a landing page, a thank-you page. For medspas, this produces discount-hunters, no-shows, and leads who are shocked by your pricing. The aesthetic medicine patient has a specific psychology — treatments are identity-adjacent, emotionally driven, and require a trust-building sequence that generic creative cannot create.</p>
+                  <p>We've run campaigns across injectables, laser, CoolSculpting, weight-loss/GLP-1, microneedling, IV therapy, and skin tightening. We know which creative hooks burn out fastest (dramatic before/afters typically saturate in 6–8 weeks). We know the compliance guardrails. We know which offer types produce high-LTV patients vs. one-time discount chasers. That experience is baked into every campaign we build.</p>
 
                   <h3>What's <em>included</em></h3>
                   <div className="page-features reveal in">
-                    <PageFeature icon={<Check />} title="Signature offer creation" desc="We build a treatment-specific offer designed for your highest-margin services. Price point, positioning, headline, and value prop — all engineered for cold-traffic conversion without undermining your premium brand." />
-                    <PageFeature icon={<Chart />} title="Dedicated landing pages" desc="Every campaign has its own focused landing page — not your homepage. One offer, one call to action, one conversion goal. We design, write, and publish it." />
-                    <PageFeature icon={<Check />} title="Qualification flow design" desc="The intake form is a qualification tool, not just a data collection form. We design question sequences that filter out low-intent traffic before it reaches your calendar or our sales team." />
-                    <PageFeature icon={<Chart />} title="Treatment ladder strategy" desc="We map your treatment menu to a patient journey: entry offer → first visit conversion → upsell to higher-value treatment → recurring maintenance schedule. Every touchpoint is intentional." />
-                    <PageFeature icon={<Check />} title="A/B testing framework" desc="Headline vs. headline. Offer price vs. price. Image vs. video. We run structured tests, document the winners, and apply learnings across campaigns." />
-                    <PageFeature icon={<Chart />} title="Offer refresh cycles" desc="Offers fatigue just like creative does. We proactively cycle in new angles — seasonal hooks, limited-availability frames, new-patient positioning — to keep conversion rates from decaying." />
+                    <PageFeature icon={<Target />} title="Treatment-specific campaign architecture" desc="Each campaign is built around a specific treatment or treatment category — not a generic 'medspa services' umbrella. Laser campaigns target laser patients. Filler campaigns target filler patients. The messaging is precise." />
+                    <PageFeature icon={<Check />} title="Compliant creative production" desc="All creative passes our internal compliance review before launch. No medical claims, no misleading outcome language, no regulatory risk. We know the rules for aesthetic advertising and build within them." />
+                    <PageFeature icon={<Target />} title="Audience strategy: cold + warm" desc="We run cold prospecting campaigns (new audiences) alongside warm retargeting (website visitors, past leads, lookalikes from your best patients). Each layer is optimized separately and learns from the others." />
+                    <PageFeature icon={<Check />} title="Weekly creative rotation" desc="Ad creative fatigues. We rotate fresh variants every 7–14 days based on performance data — keeping cost per lead stable as campaigns mature." />
+                    <PageFeature icon={<Target />} title="Budget management & scaling" desc="We manage your daily budget, handle bid strategy, and scale winning ad sets methodically — never blowing budget on an unproven angle." />
+                    <PageFeature icon={<Check />} title="Treatment-level ROAS tracking" desc="Every campaign is tied to downstream booking data so you can see revenue per treatment, not just clicks. We optimize for patients, not traffic." />
                   </div>
 
                   <PagePull
-                    quote="Our calendar is finally <em>predictable</em>. I sleep better, my injectors are booked, and our deposit rate doubled."
-                    cite="— Brianna Otero, Clinical Director, Maven Skin Bar"
+                    quote="What surprised me most was the <em>creative quality</em>. The before/after ads feel like our brand, not a template."
+                    cite="— Sasha Lim, CMO, Atelier Beauty Group"
                   />
                 </div>
                 <PageSidebar
-                  heading="Is your offer <em>converting</em>?"
-                  body="We'll look at your current offer architecture and tell you exactly where patients are dropping off — and what to change."
+                  heading="See what's <em>possible</em> for your spa."
+                  body="We'll audit your current ads, identify where budget is leaking, and show you what a medspa-specific campaign system looks like."
                 />
               </div>
             </div>
           </section>
 
           <PageRelated
-            heading="Related services & results."
+            heading="See paid acquisition in action."
             items={[
-              { href: 'service-paid-acquisition.html', eyebrow: 'Service', title: 'Paid <em>Acquisition</em>', stat: '→', meta: 'Meta & Google ads for medspas' },
-              { href: 'case-study-maven.html', eyebrow: 'Miami, FL', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'New MRR via premium offer repositioning' },
-              { href: 'service-call-qualify.html', eyebrow: 'Service', title: 'Call &amp; <em>Qualify</em>', stat: '→', meta: 'We handle every inbound lead' },
+              { href: 'case-study-glow-co.html', eyebrow: 'Scottsdale, AZ', title: 'Glow &amp; <em>Co.</em> Aesthetics', stat: '8.4<em>×</em>', meta: 'ROAS · 412% new patient lift' },
+              { href: 'case-study-lumen.html', eyebrow: 'Austin, TX', title: 'Lumen <em>Aesthetic</em> Studio', stat: '+317<em>%</em>', meta: 'Revenue in 6 months' },
+              { href: 'service-funnels-offers.html', eyebrow: 'Next: Service', title: 'Funnels &amp; <em>Offers</em>', stat: '→', meta: 'Learn about our funnel strategy' },
             ]}
           />
           <PageCTA />
@@ -70,5 +75,5 @@
     );
   }
 
-  ReactDOM.createRoot(document.getElementById('root')).render(<ServiceFunnelsOffers />);
+  ReactDOM.createRoot(document.getElementById('root')).render(<ServicePaidAcquisition />);
 })();

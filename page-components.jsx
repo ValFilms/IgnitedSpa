@@ -1,288 +1,176 @@
-// Ignited Spa — Lead capture
-const { useState: useStateLF, useEffect: useEffectLF, useRef: useRefLF } = React;
+// Shared page components — exported to window for use by all detail pages
+// Depends on: sections.jsx (Nav, Footer, LeadPill already on window)
 
-const STORAGE_KEY = 'ignited_spa_leads';
-const GHL_WEBHOOK = 'https://services.leadconnectorhq.com/hooks/tjeTjvRXWK5MrsLV7eGi/webhook-trigger/960bac93-4fa0-402e-9b19-fa2883fb90a4';
+(function () {
+  const { useEffect } = React;
 
-// ── Save to localStorage (backup) ──────────────────────────────────────────
-function saveLead(lead) {
-  try {
-    const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    existing.push({ ...lead, ts: new Date().toISOString() });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-  } catch (e) {}
-}
+  // ── Reveal hook ──────────────────────────────────────────────────────────
+  function usePageReveal() {
+    useEffect(() => {
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      );
+      els.forEach(el => io.observe(el));
+      return () => io.disconnect();
+    }, []);
+  }
 
-// ── Send to GoHighLevel via webhook ────────────────────────────────────────
-async function sendToGHL(data) {
-  const nameParts = (data.name || '').trim().split(/\s+/);
-  const firstName = nameParts[0] || '';
-  const lastName  = nameParts.slice(1).join(' ') || '';
-
-  const payload = {
-    // GHL standard contact fields
-    firstName,
-    lastName,
-    name:        data.name,
-    email:       data.email,
-    phone:       data.phone,
-    companyName: data.spa,
-
-    // Location
-    city: data.city,
-
-    // Qualification fields (map these to custom fields in your GHL workflow)
-    monthly_revenue:  data.revenue,
-    current_ad_spend: data.spend,
-    primary_goal:     data.goal,
-    notes:            data.notes || '',
-
-    // Meta
-    source:      'Ignited Spa Website',
-    page_url:    typeof window !== 'undefined' ? window.location.href : '',
-    submittedAt: new Date().toISOString(),
-    tags:        ['ignited-spa-lead', 'website-form'],
-  };
-
-  const res = await fetch(GHL_WEBHOOK, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  });
-
-  if (!res.ok) throw new Error('Webhook responded with ' + res.status);
-  return res;
-}
-
-function validEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-function validPhone(p) { return p.replace(/\D/g,'').length >= 10; }
-
-const REV_RANGES   = ['Under $10k / mo', '$10k \u2013 $30k / mo', '$30k \u2013 $50k / mo', '$50k+ / mo'];
-const SPEND_RANGES = ['Not running ads yet', 'Under $2k / mo', '$2k \u2013 $10k / mo', '$10k+ / mo'];
-const GOALS        = [
-  'Bring in more qualified new patients',
-  'Increase high-value package sales',
-  'Fill provider schedules consistently',
-  'Launch a new service or device',
-];
-
-function LeadForm({ variant = 'inline', onDone }) {
-  const [step,       setStep]       = useStateLF(0);
-  const [submitting, setSubmitting] = useStateLF(false);
-  const [data, setData] = useStateLF({
-    name: '', email: '', phone: '',
-    spa: '', city: '', revenue: '',
-    spend: '', goal: '', notes: ''
-  });
-  const [err,  setErr]  = useStateLF('');
-  const [done, setDone] = useStateLF(false);
-
-  const set = (k, v) => setData(d => ({...d, [k]: v}));
-
-  const next = async () => {
-    setErr('');
-
-    if (step === 0) {
-      if (!data.name.trim())        return setErr('Tell us your name.');
-      if (!validEmail(data.email))  return setErr('A valid email keeps you in the loop.');
-      if (!validPhone(data.phone))  return setErr('We use phone for the strategy call only.');
-    }
-    if (step === 1) {
-      if (!data.spa.trim())   return setErr('Your spa name helps us prep the audit.');
-      if (!data.city.trim())  return setErr('City helps us check market fit.');
-      if (!data.revenue)      return setErr('Pick a range \u2014 it stays confidential.');
-    }
-    if (step === 2) {
-      if (!data.spend) return setErr('Pick your current ad spend range.');
-      if (!data.goal)  return setErr('Pick your primary goal.');
-
-      setSubmitting(true);
-      try {
-        // Fire both in parallel; localStorage never throws
-        await Promise.allSettled([
-          sendToGHL(data),
-          Promise.resolve(saveLead(data)),
-        ]);
-      } catch (e) {
-        // Webhook failure is non-blocking — lead still saved locally
-        console.warn('GHL webhook error:', e);
-      } finally {
-        setSubmitting(false);
-      }
-
-      setDone(true);
-      onDone?.();
-      return;
-    }
-    setStep(s => s + 1);
-  };
-
-  const back = () => { setErr(''); setStep(s => Math.max(0, s - 1)); };
-
-  if (done) {
+  // ── PageHero ─────────────────────────────────────────────────────────────
+  function PageHero({ crumbs, eyebrow, h1, sub, stats }) {
     return (
-      <div className={"lead-form lead-" + variant + " lead-done"}>
-        <div className="lead-success">
-          <div className="success-mark">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 6L9 17l-5-5"/>
-            </svg>
+      <section className="about-hero" aria-label="Page hero">
+        <div className="about-hero-orb"></div>
+        <div className="about-hero-orb-2"></div>
+        <div className="container">
+          <div className="about-hero-inner">
+            <nav className="about-crumb" aria-label="Breadcrumb">
+              {crumbs.map((c, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && <span>→</span>}
+                  {c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+                </React.Fragment>
+              ))}
+            </nav>
+            <div className="about-eyebrow reveal in">
+              <span className="eyebrow"><span className="pulse"></span>{eyebrow}</span>
+            </div>
+            <h1 className="reveal in d1" dangerouslySetInnerHTML={{ __html: h1 }} />
+            <p className="about-hero-sub reveal in d2">{sub}</p>
+            {stats && (
+              <div className="about-hero-stats reveal in d3">
+                {stats.map((s, i) => (
+                  <div className="ah-stat" key={i}>
+                    <span className="ah-num serif" dangerouslySetInnerHTML={{ __html: s.num }} />
+                    <span className="ah-lbl">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          <h3 className="serif"><em>You're on the list.</em></h3>
-          <p>A strategist will reach out within 24 hours to schedule your audit. Check <strong>{data.email}</strong> for a confirmation.</p>
-          <div className="success-meta">
-            <span>· Free, no contract</span>
-            <span>· 20-min call</span>
-            <span>· Medspa-only</span>
+        </div>
+      </section>
+    );
+  }
+
+  // ── PageMetrics ───────────────────────────────────────────────────────────
+  function PageMetrics({ items }) {
+    return (
+      <div className="page-metrics reveal in">
+        {items.map((m, i) => (
+          <div className="page-metric" key={i}>
+            <div className="val" dangerouslySetInnerHTML={{ __html: m.val }} />
+            <div className="lbl">{m.label}</div>
           </div>
+        ))}
+      </div>
+    );
+  }
+
+  // ── PagePull (quote) ──────────────────────────────────────────────────────
+  function PagePull({ quote, cite }) {
+    return (
+      <div className="page-pull reveal in">
+        <blockquote dangerouslySetInnerHTML={{ __html: '\u201c' + quote + '\u201d' }} />
+        <cite>{cite}</cite>
+      </div>
+    );
+  }
+
+  // ── PageFeature (service bullet) ─────────────────────────────────────────
+  function PageFeature({ icon, title, desc }) {
+    return (
+      <div className="page-feature">
+        <div className="pf-icon">{icon}</div>
+        <div className="pf-text">
+          <h4>{title}</h4>
+          <p>{desc}</p>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className={"lead-form lead-" + variant}>
-      <div className="lead-progress">
-        {[0,1,2].map(i => (
-          <div key={i} className={"lead-dot " + (step >= i ? 'on' : '') + (step === i ? ' active' : '')}>
-            <span>{i+1}</span>
-          </div>
-        ))}
-        <div className="lead-progress-line"><div className="lead-progress-fill" style={{width: `${((step)/2)*100}%`}}></div></div>
-      </div>
-
-      <div className="lead-step-label">
-        Step {step + 1} of 3 &mdash; {['About you', 'About your spa', 'About your growth'][step]}
-      </div>
-
-      {step === 0 && (
-        <div className="lead-fields">
-          <Field label="Your name"  v={data.name}  onChange={v=>set('name',v)}  placeholder="Jane Doe" />
-          <Field label="Email"      v={data.email} onChange={v=>set('email',v)} placeholder="you@yourmedspa.com" type="email" />
-          <Field label="Phone"      v={data.phone} onChange={v=>set('phone',v)} placeholder="(555) 123-4567"     type="tel" />
+  // ── PageSidebar ───────────────────────────────────────────────────────────
+  function PageSidebar({ heading, body, cta = 'Book a free audit' }) {
+    return (
+      <div className="page-sidebar">
+        <div className="page-sidebar-card">
+          <h4 dangerouslySetInnerHTML={{ __html: heading }} />
+          <p>{body}</p>
+          <a href="#contact" className="page-sidebar-btn">
+            {cta}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <p className="page-sidebar-meta">Free · 20 min · No contract</p>
         </div>
-      )}
-
-      {step === 1 && (
-        <div className="lead-fields">
-          <Field label="Medspa name"   v={data.spa}     onChange={v=>set('spa',v)}     placeholder="Glow & Co. Aesthetics" />
-          <Field label="City / state"  v={data.city}    onChange={v=>set('city',v)}    placeholder="Scottsdale, AZ" />
-          <Choice label="Monthly revenue (confidential)" options={REV_RANGES} value={data.revenue} onChange={v=>set('revenue',v)} />
-        </div>
-      )}
-
-      {step === 2 && (
-        <div className="lead-fields">
-          <Choice label="Current ad spend"                  options={SPEND_RANGES} value={data.spend} onChange={v=>set('spend',v)} />
-          <Choice label="Primary goal for the next 90 days" options={GOALS}        value={data.goal}  onChange={v=>set('goal',v)} />
-          <Field  label="Anything else? (optional)" v={data.notes} onChange={v=>set('notes',v)} placeholder="Launching a new injector, opening 2nd location, etc." textarea />
-        </div>
-      )}
-
-      {err && <div className="lead-error">{err}</div>}
-
-      <div className="lead-actions">
-        {step > 0 && <button type="button" className="lead-back" onClick={back} disabled={submitting}>&larr; Back</button>}
-        <button type="button" className="lead-next" onClick={next} disabled={submitting}>
-          {submitting
-            ? <><span className="lead-spinner"></span> Sending&hellip;</>
-            : <>{step === 2 ? 'Submit & get my audit' : 'Continue'}
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-              </>
-          }
-        </button>
       </div>
+    );
+  }
 
-      <div className="lead-trust">
-        &#128274; Your info stays with us. No spam, no sharing &mdash; ever.
-      </div>
-    </div>
-  );
-}
-
-function Field({ label, v, onChange, placeholder, type='text', textarea }) {
-  return (
-    <label className="field">
-      <span className="field-label">{label}</span>
-      {textarea
-        ? <textarea value={v} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={3} />
-        : <input type={type} value={v} onChange={e=>onChange(e.target.value)} placeholder={placeholder} />}
-    </label>
-  );
-}
-
-function Choice({ label, options, value, onChange }) {
-  return (
-    <div className="field">
-      <span className="field-label">{label}</span>
-      <div className="choice-grid">
-        {options.map(o => (
-          <button key={o} type="button" className={"choice " + (value === o ? 'sel' : '')} onClick={()=>onChange(o)}>
-            <span className="choice-radio"></span>
-            <span>{o}</span>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ============== FLOATING PILL + MODAL ==============
-function LeadPill() {
-  const [open, setOpen] = useStateLF(false);
-  const [show, setShow] = useStateLF(false);
-
-  useEffectLF(() => {
-    const onScroll = () => setShow(window.scrollY > 600);
-    window.addEventListener('scroll', onScroll);
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
-  useEffectLF(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
-
-  useEffectLF(() => {
-    document.querySelectorAll('a[href="#contact"], a.btn-primary').forEach(a => {
-      if (a.dataset.leadHook) return;
-      a.dataset.leadHook = '1';
-      a.addEventListener('click', (e) => {
-        const inForm = a.closest('.cta-section');
-        if (inForm) return;
-        e.preventDefault();
-        setOpen(true);
-      });
-    });
-    return () => {};
-  }, []);
-
-  return (
-    <>
-      <button className={"lead-pill " + (show ? 'show' : '') + (open ? ' hidden' : '')} onClick={() => setOpen(true)}>
-        <span className="lead-pill-dot"></span>
-        <span>Free 20-min audit</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </button>
-
-      {open && (
-        <div className="lead-modal-bg" onClick={(e) => { if (e.target.classList.contains('lead-modal-bg')) setOpen(false); }}>
-          <div className="lead-modal">
-            <button className="lead-close" onClick={() => setOpen(false)} aria-label="Close">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <div className="lead-modal-head">
-              <span className="eyebrow"><span className="pulse"></span>$1,000 ad spend on us</span>
-              <h3 className="serif">Let's see what's <em>actually possible</em> for your spa.</h3>
-              <p>20 minutes. We audit your funnel, ads, and offers. If we're a fit, we cover your first $1,000 in ad spend and our sales team books the appointments for you.</p>
+  // ── PageRelated ───────────────────────────────────────────────────────────
+  function PageRelated({ heading = 'More case studies', items }) {
+    return (
+      <section className="section" style={{ background: 'var(--paper)' }}>
+        <div className="container">
+          <div className="s-head" style={{ marginBottom: '40px' }}>
+            <div>
+              <span className="label">See more</span>
+              <h2 className="reveal in" style={{ fontSize: 'clamp(32px,4vw,52px)', marginTop: '12px' }}>{heading}</h2>
             </div>
-            <LeadForm variant="modal" />
+          </div>
+          <div className="page-related reveal in">
+            {items.map((it, i) => (
+              <a href={it.href} className="page-related-card" key={i}>
+                <div className="eyebrow-sm">{it.eyebrow}</div>
+                <h4 dangerouslySetInnerHTML={{ __html: it.title }} />
+                {it.stat === '→' ? (
+                  <div className="stat-arrow">
+                    Learn more
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                  </div>
+                ) : (
+                  <div className="stat-lg" dangerouslySetInnerHTML={{ __html: it.stat }} />
+                )}
+                <div className="meta-sm">{it.meta}</div>
+              </a>
+            ))}
           </div>
         </div>
-      )}
-    </>
-  );
-}
+      </section>
+    );
+  }
 
-Object.assign(window, { LeadForm, LeadPill });
+  // ── PageCTA ───────────────────────────────────────────────────────────────
+  function PageCTA() {
+    return (
+      <section className="section cta-section" id="contact" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        <div className="cta-orb"></div>
+        <div className="container">
+          <div className="cta-grid">
+            <div className="cta-copy">
+              <span className="eyebrow" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--sky-2)', borderColor: 'rgba(255,255,255,0.15)' }}>
+                <span className="pulse"></span>
+                $1,000 in ad spend on us
+              </span>
+              <h2 className="reveal in">Ready to <em>ignite</em><br />your calendar?</h2>
+              <p className="reveal in d1" style={{ color: 'var(--sky-2)', fontSize: '17px', maxWidth: '460px', marginTop: '20px', lineHeight: '1.55' }}>
+                Book a 20-minute strategy call. We'll audit your funnel, cover your first $1K in ad spend, and our sales team handles all appointment booking from day one.
+              </p>
+              <div className="cta-meta reveal in d2">
+                <span className="item">$1K ad spend covered</span>
+                <span className="item">We book your appointments</span>
+                <span className="item">No contracts</span>
+              </div>
+            </div>
+            <div className="cta-form-wrap reveal in d1">
+              <LeadForm variant="inline" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  Object.assign(window, { PageHero, PageMetrics, PagePull, PageFeature, PageSidebar, PageRelated, PageCTA, usePageReveal });
+})();

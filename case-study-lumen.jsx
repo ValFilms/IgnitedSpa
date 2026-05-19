@@ -1,7 +1,7 @@
 (function () {
   const { useEffect } = React;
 
-  function CaseStudyGlowCo() {
+  function CaseStudyLumen() {
     usePageReveal();
     return (
       <>
@@ -11,16 +11,16 @@
             crumbs={[
               { href: 'index.html', label: 'Home' },
               { href: 'index.html#work', label: 'Case studies' },
-              { label: 'Glow & Co. Aesthetics' },
+              { label: 'Lumen Aesthetic Studio' },
             ]}
-            eyebrow="Case Study · Scottsdale, AZ · Injectables & Laser"
-            h1="From boosted posts<br/>to <em>8.4× return</em><br/>on ad spend."
-            sub="A solo-owner medspa in Scottsdale was capped at 15 consults a month and burning budget on ads with nothing to show for it. Here's exactly what we built — and the results 90 days in."
+            eyebrow="Case Study · Austin, TX · 2 Locations"
+            h1="Two locations.<br/>One system.<br/><em>+317% revenue.</em>"
+            sub="When Dr. Priya Shah opened her second Austin location, she expected momentum. Instead, she got inconsistency. Here's how we unified the marketing engine across both clinics — and what happened next."
             stats={[
-              { num: '8.4<span class="ah-suf">×</span>', label: 'Return on ad spend' },
-              { num: '412<span class="ah-suf">%</span>', label: 'New patient lift' },
-              { num: '$38', label: 'Cost per booked consult' },
-              { num: '90<span class="ah-suf">d</span>', label: 'To full calendar' },
+              { num: '+317<span class="ah-suf">%</span>', label: 'Monthly booked revenue' },
+              { num: '80<span class="ah-suf">+</span>', label: 'Consults/month (was 15)' },
+              { num: '6<span class="ah-suf">mo</span>', label: 'Time to result' },
+              { num: '2.9<span class="ah-suf">×</span>', label: 'Lower CPL vs. prior efforts' },
             ]}
           />
 
@@ -30,38 +30,38 @@
                 <div className="page-body">
 
                   <h3>The <em>challenge</em></h3>
-                  <p>Marcus Calle had built something rare in Scottsdale: a medspa with genuinely skilled injectors, excellent reviews, and a loyal core of returning patients. The problem wasn't the clinic — it was the calendar. Despite running boosted posts and a brief stint with a generalist agency, the practice was stuck at roughly 15 consults per month. Most weeks, two out of three treatment rooms sat empty by Thursday afternoon.</p>
-                  <p>The root issues were layered. The boosted posts were reaching a broad, low-intent audience with no qualification step. There was no conversion tracking — no way to know which ad, if any, was producing patients. The agency had delivered a "dental-clinic template" campaign that ignored the specific psychology of aesthetic patients. And when leads did come in, no one was calling them fast enough. By the time the front desk followed up, they'd booked elsewhere.</p>
+                  <p>Dr. Shah's original Lumen Aesthetic Studio location had grown steadily over three years on a combination of referrals, organic social, and a modest ad budget. When she opened a second location on the other side of Austin, she assumed the momentum would transfer. It didn't.</p>
+                  <p>Location two was generating half the patient volume despite being in an equally strong market. The two locations were running separate ad accounts, separate landing pages, and separate intake processes — meaning the algorithm had no shared data, no cross-location learning, and no unified story to tell potential patients. A patient searching "medspa Austin" might see two different ads, two different offers, and arrive at two different web pages. The system was working against itself.</p>
+                  <p>Staff time was also being consumed by the volume discrepancy. The original location was overbooked; the new one had availability it couldn't fill. Without a centralized intake and routing system, leads at the wrong location either dropped off or required manual effort to redirect.</p>
 
                   <h3>What we <em>built</em></h3>
-                  <p>We started with a full audit of Marcus's existing funnel — ad account, landing page, CRM setup, and lead response process. The diagnosis was clear: reach without a system is just noise. Here's what we installed:</p>
-                  <p><strong>Signature offer architecture.</strong> We built a "Timeless Glow Laser Facial" at $149 — an accessible entry point designed to drive first visits without positioning the clinic as a discount provider. The offer was engineered to showcase the team's skill and convert first-time patients into repeat facial + injectable clients.</p>
-                  <p><strong>Meta + Google campaign system.</strong> We launched Meta campaigns targeting Scottsdale women aged 28–58 with interest in aesthetics, skincare, and competitors' pages. Simultaneously, Google Search campaigns targeted high-intent local terms ("laser facial scottsdale," "botox consultation near me"). Both campaigns fed into a dedicated landing page — not the homepage — with a single conversion goal.</p>
-                  <p><strong>Speed-to-lead response.</strong> Our in-house sales team received every inbound lead in real time and called within an average of 4 minutes. Response speed is the single most powerful predictor of booking rate. We also collected a $50 booking deposit on every consult — reducing no-shows from ~40% to under 12%.</p>
-                  <p><strong>7-touch follow-up sequence.</strong> Every lead that didn't immediately book entered an automated follow-up sequence: 2 SMS, 3 emails, and 2 outbound call attempts over 7 days. This sequence alone recovered 22% of leads that initially didn't book.</p>
-                  <p><strong>No-show recovery.</strong> For patients who missed their appointment, an automated re-booking sequence recaptured them within 48 hours with a priority rescheduling link.</p>
+                  <p><strong>Unified campaign architecture.</strong> We consolidated both locations under a single Meta Business account, enabling shared audience learning, shared pixel data, and algorithmic optimization across the full Austin market. Rather than splitting budget and diluting data, we let Meta decide which location to serve each ad to based on geographic and behavioral signals.</p>
+                  <p><strong>Location-intelligent creative.</strong> Each ad included location-aware elements — "Which Lumen is closest to you?" — with dynamic variants that highlighted each clinic's unique character. The North Austin location leaned into a neighborhood feel; the South Austin location emphasized the flagship experience. One campaign, two distinct identities.</p>
+                  <p><strong>Shared new patient offer.</strong> We created a "New Patient Intro Facial" at $99 that ran across both locations simultaneously. One offer, consistent positioning, maximum ad spend efficiency. The offer was designed to generate first visits and begin the patient relationship — not to produce one-time discount patients.</p>
+                  <p><strong>Centralized intake + smart routing.</strong> Our sales team handled inbound from both locations through a shared CRM. When a lead came in, they were routed to the nearest available slot across either clinic — filling gaps at the newer location without requiring any manual effort from the in-house team.</p>
+                  <p><strong>Location-level reporting.</strong> Dr. Shah received a weekly dashboard showing cost per patient, show rate, and revenue attributed to ads — broken down by location. For the first time, she could see exactly what each dollar of ad spend was producing at each clinic.</p>
 
                   <PagePull
-                    quote="Best <em>marketing investment</em> we've ever made. They replaced two agencies and a part-time hire — and outperformed all three."
-                    cite="— Marcus Calle, Founder, Glow & Co. Aesthetics"
+                    quote="We went from 15 consults a month to over <em>80 in the first quarter.</em> They actually understand medspa unit economics."
+                    cite="— Dr. Priya Shah, Owner, Lumen Aesthetic Studio"
                   />
 
                   <h3>The <em>results</em></h3>
-                  <p>By day 90, Marcus's calendar was fully booked. The metrics below are calculated from verified campaign data and the clinic's booking system, covering the 90-day engagement window.</p>
+                  <p>Within 6 months, combined monthly booked revenue across both locations had grown 317%. The newer location reached parity with the original within 4 months — and by month 6 was outperforming it on a per-appointment-slot basis. Total consults grew from ~15/month to over 80/month across both locations.</p>
 
                   <PageMetrics items={[
-                    { val: '8.4<em>×</em>', label: 'ROAS (revenue ÷ total ad spend)' },
-                    { val: '412<em>%</em>', label: 'New patient lift vs. prior 90 days' },
-                    { val: '$<em>38</em>', label: 'Avg cost per booked consult' },
-                    { val: '90<em>d</em>', label: 'Days to full calendar' },
+                    { val: '+317<em>%</em>', label: 'Monthly booked revenue (6 mo.)' },
+                    { val: '80<em>+</em>', label: 'Combined consults/month' },
+                    { val: '4<em>mo</em>', label: 'Location 2 reached parity' },
+                    { val: '2.9<em>×</em>', label: 'Lower cost per patient vs. prior efforts' },
                   ]} />
 
-                  <p>Beyond the headline numbers: average patient LTV increased as the new patient cohort converted to quarterly filler and laser maintenance schedules. The $149 entry offer had done its job — most new patients booked a second treatment within 60 days.</p>
+                  <p>The unified system also created a compounding effect: patient data, audience signals, and creative learnings from both locations fed a shared asset library. By month 6, cost per lead had dropped 34% from month 1 as the algorithm optimized against a much richer data set.</p>
 
                 </div>
                 <PageSidebar
-                  heading="Want results <em>like this</em>?"
-                  body="Book a 20-minute strategy call. We'll audit your current funnel and show you where the leaks are — before you spend another dollar on ads."
+                  heading="Running <em>multiple</em> locations?"
+                  body="Multi-location medspa growth requires a different system than a single clinic. We've built it. Let's talk."
                 />
               </div>
             </div>
@@ -70,7 +70,7 @@
           <PageRelated
             heading="More medspa transformations."
             items={[
-              { href: 'case-study-lumen.html', eyebrow: 'Austin, TX · 2 Locations', title: 'Lumen <em>Aesthetic</em> Studio', stat: '+317<em>%</em>', meta: 'Monthly booked revenue in 6 months' },
+              { href: 'case-study-glow-co.html', eyebrow: 'Scottsdale, AZ · Solo owner', title: 'Glow &amp; <em>Co.</em> Aesthetics', stat: '8.4<em>×</em>', meta: 'Return on ad spend in 90 days' },
               { href: 'case-study-maven.html', eyebrow: 'Miami, FL · Boutique flagship', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'Net new MRR from one campaign' },
               { href: 'why-ignited-spa.html', eyebrow: 'Why Ignited Spa', title: 'What makes us <em>different</em>', stat: '4<em>×</em>', meta: 'Things no other medspa agency does' },
             ]}
@@ -84,5 +84,5 @@
     );
   }
 
-  ReactDOM.createRoot(document.getElementById('root')).render(<CaseStudyGlowCo />);
+  ReactDOM.createRoot(document.getElementById('root')).render(<CaseStudyLumen />);
 })();

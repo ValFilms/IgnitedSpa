@@ -1,7 +1,7 @@
 (function () {
   const { useEffect } = React;
 
-  function CaseStudyLumen() {
+  function CaseStudyMaven() {
     usePageReveal();
     return (
       <>
@@ -11,16 +11,16 @@
             crumbs={[
               { href: 'index.html', label: 'Home' },
               { href: 'index.html#work', label: 'Case studies' },
-              { label: 'Lumen Aesthetic Studio' },
+              { label: 'Maven Skin Bar' },
             ]}
-            eyebrow="Case Study · Austin, TX · 2 Locations"
-            h1="Two locations.<br/>One system.<br/><em>+317% revenue.</em>"
-            sub="When Dr. Priya Shah opened her second Austin location, she expected momentum. Instead, she got inconsistency. Here's how we unified the marketing engine across both clinics — and what happened next."
+            eyebrow="Case Study · Miami, FL · Boutique Flagship"
+            h1="Stop attracting<br/>discount-hunters.<br/><em>Start retaining them.</em>"
+            sub="Maven Skin Bar had no shortage of inquiries. The problem was who was inquiring. Here's how we rebuilt their acquisition system around premium patients — and added $12K in net new MRR from a single campaign."
             stats={[
-              { num: '+317<span class="ah-suf">%</span>', label: 'Monthly booked revenue' },
-              { num: '80<span class="ah-suf">+</span>', label: 'Consults/month (was 15)' },
-              { num: '6<span class="ah-suf">mo</span>', label: 'Time to result' },
-              { num: '2.9<span class="ah-suf">×</span>', label: 'Lower CPL vs. prior efforts' },
+              { num: '$<span class="ah-suf">12</span>K', label: 'Net new MRR from one campaign' },
+              { num: '88<span class="ah-suf">%</span>', label: 'Show rate (avg is ~52%)' },
+              { num: '71<span class="ah-suf">%</span>', label: 'New patients booked a package' },
+              { num: '1', label: 'Campaign. Focused.' },
             ]}
           />
 
@@ -30,38 +30,38 @@
                 <div className="page-body">
 
                   <h3>The <em>challenge</em></h3>
-                  <p>Dr. Shah's original Lumen Aesthetic Studio location had grown steadily over three years on a combination of referrals, organic social, and a modest ad budget. When she opened a second location on the other side of Austin, she assumed the momentum would transfer. It didn't.</p>
-                  <p>Location two was generating half the patient volume despite being in an equally strong market. The two locations were running separate ad accounts, separate landing pages, and separate intake processes — meaning the algorithm had no shared data, no cross-location learning, and no unified story to tell potential patients. A patient searching "medspa Austin" might see two different ads, two different offers, and arrive at two different web pages. The system was working against itself.</p>
-                  <p>Staff time was also being consumed by the volume discrepancy. The original location was overbooked; the new one had availability it couldn't fill. Without a centralized intake and routing system, leads at the wrong location either dropped off or required manual effort to redirect.</p>
+                  <p>Maven Skin Bar is a carefully positioned boutique medspa in Miami. The space, the team, and the treatment menu were all calibrated for a premium, experience-led clientele. The problem wasn't the product — it was the patient pipeline.</p>
+                  <p>Broad ad targeting was generating inquiries, but not the right ones. The leads coming in were price-sensitive, comparison-shopping, and often shocked by the pricing at consultation. Staff time was being burned on calls that went nowhere. The no-show rate was above 40%. And the brand perception was slowly drifting — discount-adjacent creative was undermining the premium positioning the team had spent years building.</p>
+                  <p>Brianna Otero, the clinical director, put it simply: "We didn't need more leads. We needed better ones."</p>
 
                   <h3>What we <em>built</em></h3>
-                  <p><strong>Unified campaign architecture.</strong> We consolidated both locations under a single Meta Business account, enabling shared audience learning, shared pixel data, and algorithmic optimization across the full Austin market. Rather than splitting budget and diluting data, we let Meta decide which location to serve each ad to based on geographic and behavioral signals.</p>
-                  <p><strong>Location-intelligent creative.</strong> Each ad included location-aware elements — "Which Lumen is closest to you?" — with dynamic variants that highlighted each clinic's unique character. The North Austin location leaned into a neighborhood feel; the South Austin location emphasized the flagship experience. One campaign, two distinct identities.</p>
-                  <p><strong>Shared new patient offer.</strong> We created a "New Patient Intro Facial" at $99 that ran across both locations simultaneously. One offer, consistent positioning, maximum ad spend efficiency. The offer was designed to generate first visits and begin the patient relationship — not to produce one-time discount patients.</p>
-                  <p><strong>Centralized intake + smart routing.</strong> Our sales team handled inbound from both locations through a shared CRM. When a lead came in, they were routed to the nearest available slot across either clinic — filling gaps at the newer location without requiring any manual effort from the in-house team.</p>
-                  <p><strong>Location-level reporting.</strong> Dr. Shah received a weekly dashboard showing cost per patient, show rate, and revenue attributed to ads — broken down by location. For the first time, she could see exactly what each dollar of ad spend was producing at each clinic.</p>
+                  <p><strong>Premium offer repositioning.</strong> We eliminated discount-based offers entirely. No "$50 off" hooks, no "free consultation" language that attracts browsers. Instead, we built a "Priority Access — New Member Intake" offer that framed the first visit as a curated, limited-availability experience. The positioning attracted patients who were already committed — not ones who needed convincing on price.</p>
+                  <p><strong>Audience targeting by income and LTV signals.</strong> We rebuilt the Meta targeting from scratch, focusing on high-income Miami zip codes, lookalike audiences modeled from Maven's highest-LTV existing patients, and interest signals that correlated with premium aesthetic spending. We excluded past broad audiences entirely and accepted a higher CPM in exchange for dramatically better lead quality.</p>
+                  <p><strong>Deposit-first booking.</strong> Every prospective patient was required to put down a $150 booking deposit before their appointment was confirmed. This single change eliminated approximately 90% of low-intent inquiries. Patients who completed the deposit showed up — and they showed up prepared for premium pricing, not surprised by it.</p>
+                  <p><strong>Pre-consult education sequence.</strong> After booking, new patients received a curated email and SMS sequence that introduced the Maven experience, explained the treatment philosophy, and set price anchoring before the first visit. By the time they walked in the door, they understood what Maven was and had already self-selected as the right fit.</p>
+                  <p><strong>Single-campaign focus.</strong> We ran one campaign with four creative variants, not eight campaigns with diluted creative quality. This allowed us to maintain the premium look and feel of the brand throughout — the creative looked like Maven, not like a generic medspa ad template.</p>
 
                   <PagePull
-                    quote="We went from 15 consults a month to over <em>80 in the first quarter.</em> They actually understand medspa unit economics."
-                    cite="— Dr. Priya Shah, Owner, Lumen Aesthetic Studio"
+                    quote="Their team calls every lead within minutes and takes the deposit before they ever hit our calendar. <em>Show rates jumped overnight.</em>"
+                    cite="— Brianna Otero, Clinical Director, Maven Skin Bar"
                   />
 
                   <h3>The <em>results</em></h3>
-                  <p>Within 6 months, combined monthly booked revenue across both locations had grown 317%. The newer location reached parity with the original within 4 months — and by month 6 was outperforming it on a per-appointment-slot basis. Total consults grew from ~15/month to over 80/month across both locations.</p>
+                  <p>The campaign produced $12K in net new monthly recurring revenue — measured as the incremental revenue from new patients acquired during the campaign window who were still active 60 days later. More significant than the MRR number was what changed structurally: Maven's acquisition system now consistently attracts patients who belong there.</p>
 
                   <PageMetrics items={[
-                    { val: '+317<em>%</em>', label: 'Monthly booked revenue (6 mo.)' },
-                    { val: '80<em>+</em>', label: 'Combined consults/month' },
-                    { val: '4<em>mo</em>', label: 'Location 2 reached parity' },
-                    { val: '2.9<em>×</em>', label: 'Lower cost per patient vs. prior efforts' },
+                    { val: '$<em>12</em>K', label: 'Net new MRR from campaign' },
+                    { val: '88<em>%</em>', label: 'Show rate (industry avg ~52%)' },
+                    { val: '71<em>%</em>', label: 'New patients booked a package at first visit' },
+                    { val: '−90<em>%</em>', label: 'Drop in low-intent inquiries' },
                   ]} />
 
-                  <p>The unified system also created a compounding effect: patient data, audience signals, and creative learnings from both locations fed a shared asset library. By month 6, cost per lead had dropped 34% from month 1 as the algorithm optimized against a much richer data set.</p>
+                  <p>The deposit requirement also changed staff morale. The front desk team went from spending hours chasing no-shows and fielding price objections to having focused, productive consultations with patients who were already bought in. That's a different business — and a different culture.</p>
 
                 </div>
                 <PageSidebar
-                  heading="Running <em>multiple</em> locations?"
-                  body="Multi-location medspa growth requires a different system than a single clinic. We've built it. Let's talk."
+                  heading="Quality over <em>quantity.</em>"
+                  body="If you're tired of chasing low-intent leads, we can rebuild your acquisition system around the patients your practice actually deserves."
                 />
               </div>
             </div>
@@ -71,7 +71,7 @@
             heading="More medspa transformations."
             items={[
               { href: 'case-study-glow-co.html', eyebrow: 'Scottsdale, AZ · Solo owner', title: 'Glow &amp; <em>Co.</em> Aesthetics', stat: '8.4<em>×</em>', meta: 'Return on ad spend in 90 days' },
-              { href: 'case-study-maven.html', eyebrow: 'Miami, FL · Boutique flagship', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'Net new MRR from one campaign' },
+              { href: 'case-study-lumen.html', eyebrow: 'Austin, TX · 2 Locations', title: 'Lumen <em>Aesthetic</em> Studio', stat: '+317<em>%</em>', meta: 'Monthly booked revenue in 6 months' },
               { href: 'why-ignited-spa.html', eyebrow: 'Why Ignited Spa', title: 'What makes us <em>different</em>', stat: '4<em>×</em>', meta: 'Things no other medspa agency does' },
             ]}
           />
@@ -84,5 +84,5 @@
     );
   }
 
-  ReactDOM.createRoot(document.getElementById('root')).render(<CaseStudyLumen />);
+  ReactDOM.createRoot(document.getElementById('root')).render(<CaseStudyMaven />);
 })();
