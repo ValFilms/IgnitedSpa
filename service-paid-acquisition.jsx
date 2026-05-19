@@ -1,33 +1,74 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Medspa Paid Advertising | Meta & Google Ads for Medical Spas | Ignited Spa</title>
-<meta name="description" content="Ignited Spa runs paid acquisition campaigns built exclusively for medical spas — treatment-specific targeting, compliant creative, and campaigns that produce booked patients, not just clicks." />
-<meta name="keywords" content="medspa paid advertising, medical spa google ads, medspa meta ads, medspa facebook advertising agency, medical spa paid media" />
-<meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://www.ignitedspa.com/service-paid-acquisition" />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23E63946'/%3E%3C/svg%3E" />
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Medspa Paid Advertising — Meta & Google Ads" />
-<meta property="og:description" content="Treatment-specific campaigns, compliant creative, and an ad system built around booked patients — not vanity metrics." />
-<meta property="og:url" content="https://www.ignitedspa.com/service-paid-acquisition" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="styles.css" />
-<link rel="stylesheet" href="about.css" />
-<link rel="stylesheet" href="pages.css" />
-</head>
-<body>
-<div id="root"></div>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" data-presets="env,react" src="lead-form.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="sections.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="page-components.jsx"></script>
-<script type="text/babel" data-presets="env,react" src="service-paid-acquisition.jsx"></script>
-</body>
-</html>
+(function () {
+  const Check = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  );
+  const Chart = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18M7 14l4-4 4 4 5-6"/></svg>
+  );
+
+  function ServiceFunnelsOffers() {
+    usePageReveal();
+    return (
+      <>
+        <Nav />
+        <main id="main-content">
+          <PageHero
+            crumbs={[
+              { href: 'index.html', label: 'Home' },
+              { href: 'index.html#services', label: 'Services' },
+              { label: 'Funnels & Offers' },
+            ]}
+            eyebrow="Service · Offer Strategy · Funnel Design"
+            h1="The offer is the ad.<br/><em>Get it wrong</em> and<br/>nothing else matters."
+            sub="Clicks don't book appointments. The right offer does. We build signature treatment offers, landing pages, and qualification flows calibrated to how medspa patients actually decide to buy."
+          />
+
+          <section className="section" style={{ background: 'var(--paper)' }}>
+            <div className="container">
+              <div className="page-layout">
+                <div className="page-body">
+                  <h3>The offer is <em>everything</em></h3>
+                  <p>Most medspas make the same mistake: they run ads to their homepage or a generic "book now" page. There's no specific offer, no qualification step, no reason for a cold prospect to take action today. The result is low conversion rates, wasted ad spend, and the mistaken conclusion that "ads don't work for us."</p>
+                  <p>Ads work when the offer is right. A signature offer — a specific treatment, at a specific price point, with a specific value proposition — does three things simultaneously: it attracts the right patients, pre-qualifies their intent, and gives the algorithm a clear conversion to optimize toward. We've built dozens of these offers across every medspa treatment category. We know what converts.</p>
+
+                  <h3>What's <em>included</em></h3>
+                  <div className="page-features reveal in">
+                    <PageFeature icon={<Check />} title="Signature offer creation" desc="We build a treatment-specific offer designed for your highest-margin services. Price point, positioning, headline, and value prop — all engineered for cold-traffic conversion without undermining your premium brand." />
+                    <PageFeature icon={<Chart />} title="Dedicated landing pages" desc="Every campaign has its own focused landing page — not your homepage. One offer, one call to action, one conversion goal. We design, write, and publish it." />
+                    <PageFeature icon={<Check />} title="Qualification flow design" desc="The intake form is a qualification tool, not just a data collection form. We design question sequences that filter out low-intent traffic before it reaches your calendar or our sales team." />
+                    <PageFeature icon={<Chart />} title="Treatment ladder strategy" desc="We map your treatment menu to a patient journey: entry offer → first visit conversion → upsell to higher-value treatment → recurring maintenance schedule. Every touchpoint is intentional." />
+                    <PageFeature icon={<Check />} title="A/B testing framework" desc="Headline vs. headline. Offer price vs. price. Image vs. video. We run structured tests, document the winners, and apply learnings across campaigns." />
+                    <PageFeature icon={<Chart />} title="Offer refresh cycles" desc="Offers fatigue just like creative does. We proactively cycle in new angles — seasonal hooks, limited-availability frames, new-patient positioning — to keep conversion rates from decaying." />
+                  </div>
+
+                  <PagePull
+                    quote="Our calendar is finally <em>predictable</em>. I sleep better, my injectors are booked, and our deposit rate doubled."
+                    cite="— Brianna Otero, Clinical Director, Maven Skin Bar"
+                  />
+                </div>
+                <PageSidebar
+                  heading="Is your offer <em>converting</em>?"
+                  body="We'll look at your current offer architecture and tell you exactly where patients are dropping off — and what to change."
+                />
+              </div>
+            </div>
+          </section>
+
+          <PageRelated
+            heading="Related services & results."
+            items={[
+              { href: 'service-paid-acquisition.html', eyebrow: 'Service', title: 'Paid <em>Acquisition</em>', stat: '→', meta: 'Meta & Google ads for medspas' },
+              { href: 'case-study-maven.html', eyebrow: 'Miami, FL', title: 'Maven <em>Skin</em> Bar', stat: '$<em>12</em>K', meta: 'New MRR via premium offer repositioning' },
+              { href: 'service-call-qualify.html', eyebrow: 'Service', title: 'Call &amp; <em>Qualify</em>', stat: '→', meta: 'We handle every inbound lead' },
+            ]}
+          />
+          <PageCTA />
+        </main>
+        <Footer />
+        <LeadPill />
+      </>
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(<ServiceFunnelsOffers />);
+})();

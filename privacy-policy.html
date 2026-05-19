@@ -1,190 +1,176 @@
-/* ── Shared styles for all detail/inner pages ── */
+// Shared page components — exported to window for use by all detail pages
+// Depends on: sections.jsx (Nav, Footer, LeadPill already on window)
 
-/* Page hero reuses about-hero from about.css */
+(function () {
+  const { useEffect } = React;
 
-/* ── Metrics bar ── */
-.page-metrics {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--line);
-  border: 1px solid var(--line);
-  border-radius: 24px;
-  overflow: hidden;
-  margin: 64px 0;
-}
-.page-metric {
-  background: var(--paper);
-  padding: 36px 28px;
-  text-align: center;
-}
-.page-metric .val {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(36px, 5vw, 56px);
-  line-height: 1; letter-spacing: -0.02em;
-  color: var(--ink);
-}
-.page-metric .val em { font-style: italic; color: var(--navy-2); }
-.page-metric .lbl {
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--mute); margin-top: 10px; line-height: 1.4;
-}
+  // ── Reveal hook ──────────────────────────────────────────────────────────
+  function usePageReveal() {
+    useEffect(() => {
+      const els = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+        { threshold: 0.1, rootMargin: '0px 0px -60px 0px' }
+      );
+      els.forEach(el => io.observe(el));
+      return () => io.disconnect();
+    }, []);
+  }
 
-/* ── Body text ── */
-.page-body { max-width: 720px; }
-.page-body p { font-size: 16px; color: var(--mute); line-height: 1.8; margin: 0 0 20px; }
-.page-body p strong { color: var(--ink); font-weight: 600; }
-.page-body p:last-child { margin-bottom: 0; }
-.page-body h3 {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.015em; font-weight: 400;
-  margin: 56px 0 18px; color: var(--ink);
-}
-.page-body h3 em { font-style: italic; color: var(--navy-2); }
-.page-body h3:first-child { margin-top: 0; }
+  // ── PageHero ─────────────────────────────────────────────────────────────
+  function PageHero({ crumbs, eyebrow, h1, sub, stats }) {
+    return (
+      <section className="about-hero" aria-label="Page hero">
+        <div className="about-hero-orb"></div>
+        <div className="about-hero-orb-2"></div>
+        <div className="container">
+          <div className="about-hero-inner">
+            <nav className="about-crumb" aria-label="Breadcrumb">
+              {crumbs.map((c, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && <span>→</span>}
+                  {c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+                </React.Fragment>
+              ))}
+            </nav>
+            <div className="about-eyebrow reveal in">
+              <span className="eyebrow"><span className="pulse"></span>{eyebrow}</span>
+            </div>
+            <h1 className="reveal in d1" dangerouslySetInnerHTML={{ __html: h1 }} />
+            <p className="about-hero-sub reveal in d2">{sub}</p>
+            {stats && (
+              <div className="about-hero-stats reveal in d3">
+                {stats.map((s, i) => (
+                  <div className="ah-stat" key={i}>
+                    <span className="ah-num serif" dangerouslySetInnerHTML={{ __html: s.num }} />
+                    <span className="ah-lbl">{s.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-/* ── Pull quote ── */
-.page-pull {
-  border-left: 3px solid var(--navy-2);
-  padding: 20px 28px;
-  margin: 40px 0;
-  background: rgba(27, 52, 87, 0.04);
-  border-radius: 0 16px 16px 0;
-}
-.page-pull blockquote {
-  font-family: 'Instrument Serif', serif;
-  font-size: clamp(20px, 3vw, 26px); line-height: 1.35; letter-spacing: -0.01em;
-  margin: 0 0 12px; color: var(--ink);
-}
-.page-pull blockquote em { font-style: italic; color: var(--navy-2); }
-.page-pull cite { font-size: 13px; color: var(--mute); font-style: normal; }
+  // ── PageMetrics ───────────────────────────────────────────────────────────
+  function PageMetrics({ items }) {
+    return (
+      <div className="page-metrics reveal in">
+        {items.map((m, i) => (
+          <div className="page-metric" key={i}>
+            <div className="val" dangerouslySetInnerHTML={{ __html: m.val }} />
+            <div className="lbl">{m.label}</div>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
-/* ── Feature list (services) ── */
-.page-features { display: flex; flex-direction: column; gap: 14px; margin: 32px 0 0; }
-.page-feature {
-  display: flex; gap: 16px; align-items: flex-start;
-  padding: 20px 24px;
-  background: var(--paper);
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.page-feature:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
-.pf-icon {
-  width: 34px; height: 34px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--sky-1), var(--sky-3));
-  border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--navy-2); flex-shrink: 0;
-}
-.pf-text h4 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px; letter-spacing: -0.01em; font-weight: 400; margin: 0 0 4px;
-}
-.pf-text p { font-size: 14px; color: var(--mute); margin: 0; line-height: 1.6; }
+  // ── PagePull (quote) ──────────────────────────────────────────────────────
+  function PagePull({ quote, cite }) {
+    return (
+      <div className="page-pull reveal in">
+        <blockquote dangerouslySetInnerHTML={{ __html: '\u201c' + quote + '\u201d' }} />
+        <cite>{cite}</cite>
+      </div>
+    );
+  }
 
-/* ── Two-col layout: body + sidebar ── */
-.page-layout { display: grid; grid-template-columns: 1fr 340px; gap: 64px; align-items: start; }
-.page-sidebar { position: sticky; top: 100px; }
-.page-sidebar-card {
-  background: var(--navy-3); color: var(--paper);
-  border-radius: 24px; padding: 32px;
-  position: relative; overflow: hidden;
-}
-.page-sidebar-card::before {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(600px 400px at 100% 0%, rgba(157,192,222,0.2), transparent 70%);
-}
-.page-sidebar-card h4 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 26px; letter-spacing: -0.01em; font-weight: 400; color: var(--paper);
-  margin: 0 0 8px; position: relative;
-}
-.page-sidebar-card h4 em { font-style: italic; color: var(--sky-3); }
-.page-sidebar-card p { font-size: 14px; color: var(--sky-2); line-height: 1.55; margin: 0 0 20px; position: relative; }
-.page-sidebar-btn {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  background: var(--paper); color: var(--navy-3);
-  padding: 14px 20px; border-radius: 999px;
-  font-size: 14px; font-weight: 500;
-  transition: background 0.3s, transform 0.3s;
-  position: relative;
-}
-.page-sidebar-btn:hover { background: var(--sky-1); transform: translateY(-1px); }
-.page-sidebar-meta { font-size: 12px; color: var(--sky-2); text-align: center; margin-top: 14px; position: relative; }
+  // ── PageFeature (service bullet) ─────────────────────────────────────────
+  function PageFeature({ icon, title, desc }) {
+    return (
+      <div className="page-feature">
+        <div className="pf-icon">{icon}</div>
+        <div className="pf-text">
+          <h4>{title}</h4>
+          <p>{desc}</p>
+        </div>
+      </div>
+    );
+  }
 
-/* ── Related links ── */
-.page-related { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.page-related-card {
-  background: var(--paper); border: 1px solid var(--line);
-  border-radius: 20px; padding: 24px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  display: flex; flex-direction: column;
-}
-.page-related-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
-.page-related-card .eyebrow-sm {
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--navy-2); margin-bottom: 8px;
-}
-.page-related-card h4 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 20px; letter-spacing: -0.01em; font-weight: 400; margin: 0 0 6px;
-}
-.page-related-card h4 em { font-style: italic; color: var(--navy-2); }
-.page-related-card .meta-sm { font-size: 13px; color: var(--mute); margin-top: auto; padding-top: 12px; }
-.page-related-card .stat-lg {
-  font-family: 'Instrument Serif', serif;
-  font-size: 40px; line-height: 1; letter-spacing: -0.02em;
-  color: var(--ink); margin: 12px 0 4px;
-}
-.page-related-card .stat-lg em { font-style: italic; color: var(--navy-2); }
-/* Arrow-only stat: render smaller and muted */
-.page-related-card .stat-arrow {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin: 16px 0 8px;
-  font-size: 14px; font-weight: 500; color: var(--navy-2);
-}
+  // ── PageSidebar ───────────────────────────────────────────────────────────
+  function PageSidebar({ heading, body, cta = 'Book a free audit' }) {
+    return (
+      <div className="page-sidebar">
+        <div className="page-sidebar-card">
+          <h4 dangerouslySetInnerHTML={{ __html: heading }} />
+          <p>{body}</p>
+          <a href="#contact" className="page-sidebar-btn">
+            {cta}
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+          <p className="page-sidebar-meta">Free · 20 min · No contract</p>
+        </div>
+      </div>
+    );
+  }
 
-/* ── Diff sections (why-us page) ── */
-.why-diff-section { padding: 80px 0; position: relative; }
-.why-diff-section + .why-diff-section { border-top: 1px solid var(--line); }
-.why-diff-inner { display: grid; grid-template-columns: 280px 1fr; gap: 80px; align-items: start; }
-.why-diff-inner.flip { grid-template-columns: 1fr 280px; }
-.why-diff-inner.flip .why-diff-label { order: 2; }
-.why-diff-inner.flip .why-diff-content { order: 1; }
-.why-diff-label { text-align: right; }
-.why-diff-inner.flip .why-diff-label { text-align: left; }
-.why-num {
-  font-family: 'Instrument Serif', serif; font-style: italic;
-  font-size: 96px; line-height: 0.9; letter-spacing: -0.03em; color: var(--sky-3);
-  display: block; margin-bottom: 12px;
-}
-.why-title {
-  font-family: 'Instrument Serif', serif;
-  font-size: 28px; letter-spacing: -0.01em; font-weight: 400; color: var(--ink);
-}
-.why-title em { font-style: italic; color: var(--navy-2); }
-.why-diff-content p { font-size: 16px; color: var(--mute); line-height: 1.8; margin: 0 0 18px; }
-.why-diff-content p strong { color: var(--ink); font-weight: 600; }
+  // ── PageRelated ───────────────────────────────────────────────────────────
+  function PageRelated({ heading = 'More case studies', items }) {
+    return (
+      <section className="section" style={{ background: 'var(--paper)' }}>
+        <div className="container">
+          <div className="s-head" style={{ marginBottom: '40px' }}>
+            <div>
+              <span className="label">See more</span>
+              <h2 className="reveal in" style={{ fontSize: 'clamp(32px,4vw,52px)', marginTop: '12px' }}>{heading}</h2>
+            </div>
+          </div>
+          <div className="page-related reveal in">
+            {items.map((it, i) => (
+              <a href={it.href} className="page-related-card" key={i}>
+                <div className="eyebrow-sm">{it.eyebrow}</div>
+                <h4 dangerouslySetInnerHTML={{ __html: it.title }} />
+                {it.stat === '→' ? (
+                  <div className="stat-arrow">
+                    Learn more
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                  </div>
+                ) : (
+                  <div className="stat-lg" dangerouslySetInnerHTML={{ __html: it.stat }} />
+                )}
+                <div className="meta-sm">{it.meta}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-/* ── Responsive ── */
-@media (max-width: 960px) {
-  .page-layout { grid-template-columns: 1fr; gap: 40px; }
-  .page-sidebar { position: static; }
-  .why-diff-inner, .why-diff-inner.flip { grid-template-columns: 1fr; gap: 32px; }
-  .why-diff-inner.flip .why-diff-label { order: 0; }
-  .why-diff-inner.flip .why-diff-content { order: 1; }
-  .why-diff-label { text-align: left; }
-  .why-num { font-size: 72px; }
-}
-@media (max-width: 768px) {
-  .page-metrics { grid-template-columns: 1fr 1fr; }
-  .page-related { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 480px) {
-  .page-metrics { grid-template-columns: 1fr 1fr; }
-  .page-metric { padding: 20px 16px; }
-  .page-related { grid-template-columns: 1fr; }
-  .page-pull { padding: 16px 20px; }
-  .why-num { font-size: 56px; }
-}
+  // ── PageCTA ───────────────────────────────────────────────────────────────
+  function PageCTA() {
+    return (
+      <section className="section cta-section" id="contact" style={{ paddingTop: '100px', paddingBottom: '100px' }}>
+        <div className="cta-orb"></div>
+        <div className="container">
+          <div className="cta-grid">
+            <div className="cta-copy">
+              <span className="eyebrow" style={{ background: 'rgba(255,255,255,0.1)', color: 'var(--sky-2)', borderColor: 'rgba(255,255,255,0.15)' }}>
+                <span className="pulse"></span>
+                $1,000 in ad spend on us
+              </span>
+              <h2 className="reveal in">Ready to <em>ignite</em><br />your calendar?</h2>
+              <p className="reveal in d1" style={{ color: 'var(--sky-2)', fontSize: '17px', maxWidth: '460px', marginTop: '20px', lineHeight: '1.55' }}>
+                Book a 20-minute strategy call. We'll audit your funnel, cover your first $1K in ad spend, and our sales team handles all appointment booking from day one.
+              </p>
+              <div className="cta-meta reveal in d2">
+                <span className="item">$1K ad spend covered</span>
+                <span className="item">We book your appointments</span>
+                <span className="item">No contracts</span>
+              </div>
+            </div>
+            <div className="cta-form-wrap reveal in d1">
+              <LeadForm variant="inline" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  Object.assign(window, { PageHero, PageMetrics, PagePull, PageFeature, PageSidebar, PageRelated, PageCTA, usePageReveal });
+})();
